@@ -31,7 +31,7 @@ int main() {
 		const double b = 1 - point.x;
 		return a * a * 100.0 + b * b + 10.0;
 	};
-	context.selector = elitist_selection<algorithm_type::evaluated_specimen_type>();
+	context.selector = elitist_selection();
 	context.breeder = [](const point& lhs, const point& rhs) {
 		return point {(lhs.x + rhs.x) / 2.0, (lhs.y + rhs.y) / 2.0};
 	};

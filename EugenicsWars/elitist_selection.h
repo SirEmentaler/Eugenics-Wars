@@ -29,15 +29,14 @@
 #include <cstddef>
 #include <vector>
 
-template<class Specimen>
 class elitist_selection {
 public:
-	using specimen_type = Specimen;
-	void operator()(std::vector<specimen_type>& specimens, std::size_t n) const;
+	template<class Specimen>
+	void operator()(std::vector<Specimen>& specimens, std::size_t n) const;
 };
 
 template<class Specimen>
-inline void elitist_selection<Specimen>::operator()(std::vector<specimen_type>& specimens, std::size_t n) const {
+inline void elitist_selection::operator()(std::vector<Specimen>& specimens, std::size_t n) const {
 	std::nth_element(specimens.begin(), specimens.begin() + n, specimens.end());
 	specimens.resize(n);
 }

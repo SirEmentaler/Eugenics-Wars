@@ -28,15 +28,14 @@
 #include <cstddef>
 #include <vector>
 
-template<class Specimen>
 class roulette_wheel_selection {
 public:
-	using specimen_type = Specimen;
-	void operator()(std::vector<specimen_type>& specimens, std::size_t n) const;
+	template<class Specimen>
+	void operator()(std::vector<Specimen>& specimens, std::size_t n) const;
 };
 
 template<class Specimen>
-inline void roulette_wheel_selection<Specimen>::operator()(std::vector<specimen_type>& specimens, std::size_t n) const {
+inline void roulette_wheel_selection::operator()(std::vector<Specimen>& specimens, std::size_t n) const {
 	// TODO
 }
 
