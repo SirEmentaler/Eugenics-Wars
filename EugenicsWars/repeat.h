@@ -28,19 +28,19 @@
 #include <cstddef>
 
 template<class Function>
-void repeat(std::size_t n, Function f) {
+constexpr void repeat(std::size_t n, Function f) noexcept(noexcept(f())) {
 	while (n--) {
 		f();
 	}
 }
 
 template<class Function>
-void repeat_while(std::size_t n, Function f) {
+constexpr void repeat_while(std::size_t n, Function f) noexcept(noexcept(f())) {
 	while (n-- && f());
 }
 
 template<class Function>
-void repeat_until(std::size_t n, Function f) {
+constexpr void repeat_until(std::size_t n, Function f) noexcept(noexcept(f())) {
 	while (n-- && !f());
 }
 
