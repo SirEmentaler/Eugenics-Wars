@@ -29,12 +29,12 @@ int main() {
 	context.evaluator = [](const point& point) {
 		return (point.x - 2) * (point.x - 2) + (point.y + 3) * (point.y + 3);
 	};
-	context.selector = elitist_selection<algorithm_type::evaluated_specimen>();
+	context.selector = elitist_selection<algorithm_type::evaluated_specimen_type>();
 	context.breeder = [](const point& lhs, const point& rhs) {
 		return point {(lhs.x + rhs.x) / 2.0, (lhs.y + rhs.y) / 2.0};
 	};
 	algorithm_type algorithm(context);
-	const point result = algorithm().value;
+	const point result = algorithm().value();
 	std::cout << result.x << ", " << result.y << std::endl;
 	return 0;
 }

@@ -30,6 +30,7 @@
 #include <iterator>
 #include <utility>
 #include <vector>
+#include "evaluated_specimen.h"
 #include "repeat.h"
 
 template<class Specimen, class Rating>
@@ -37,39 +38,15 @@ class genetic_algorithm {
 public:
 	using specimen_type = Specimen;
 	using rating_type = Rating;
-	struct evaluated_specimen;
+	using evaluated_specimen_type = evaluated_specimen<Specimen, Rating>;
 	struct context_type;
 	genetic_algorithm(const context_type& context);
 	genetic_algorithm(context_type&& context);
-	evaluated_specimen operator()() const;
+	evaluated_specimen_type operator()() const;
 private:
-	void evaluate(std::vector<evaluated_specimen>& specimens) const;
-	std::vector<evaluated_specimen> breed(const std::vector<evaluated_specimen>& specimens) const;
+	void evaluate(std::vector<evaluated_specimen_type>& specimens) const;
+	std::vector<evaluated_specimen_type> breed(const std::vector<evaluated_specimen_type>& specimens) const;
 	context_type context;
-};
-
-template<class Specimen, class Rating>
-struct genetic_algorithm<Specimen, Rating>::evaluated_specimen {
-	specimen_type value;
-	rating_type rating;
-	constexpr friend bool operator==(const evaluated_specimen& lhs, const evaluated_specimen& rhs) {
-		return lhs.rating == rhs.rating;
-	}
-	constexpr friend bool operator!=(const evaluated_specimen& lhs, const evaluated_specimen& rhs) {
-		return lhs.rating != rhs.rating;
-	}
-	constexpr friend bool operator<(const evaluated_specimen& lhs, const evaluated_specimen& rhs) {
-		return lhs.rating < rhs.rating;
-	}
-	constexpr friend bool operator>(const evaluated_specimen& lhs, const evaluated_specimen& rhs) {
-		return lhs.rating > rhs.rating;
-	}
-	constexpr friend bool operator<=(const evaluated_specimen& lhs, const evaluated_specimen& rhs) {
-		return lhs.rating <= rhs.rating;
-	}
-	constexpr friend bool operator>=(const evaluated_specimen& lhs, const evaluated_specimen& rhs) {
-		return lhs.rating >= rhs.rating;
-	}
 };
 
 template<class Specimen, class Rating>
@@ -79,7 +56,7 @@ struct genetic_algorithm<Specimen, Rating>::context_type {
 	std::size_t max_iterations = 0;
 	std::function<specimen_type()> generator;
 	std::function<rating_type(const specimen_type&)> evaluator;
-	std::function<void(std::vector<evaluated_specimen>&, std::size_t)> selector;
+	std::function<void(std::vector<evaluated_specimen_type>&, std::size_t)> selector;
 	std::function<specimen_type(const specimen_type&, const specimen_type&)> breeder;
 };
 
@@ -92,10 +69,10 @@ inline genetic_algorithm<Specimen, Rating>::genetic_algorithm(context_type&& con
 	: context(std::move(context)) {}
 
 template<class Specimen, class Rating>
-inline auto genetic_algorithm<Specimen, Rating>::operator()() const -> evaluated_specimen {
-	std::vector<evaluated_specimen> specimens(context.initial_population_size);
+inline auto genetic_algorithm<Specimen, Rating>::operator()() const -> evaluated_specimen_type {
+	std::vector<evaluated_specimen_type> specimens(context.initial_population_size);
 	for (auto&& specimen : specimens) {
-		specimen.value = context.generator();
+		specimen.value() = context.generator();
 	}
 	repeat(context.max_iterations, [&] {
 		evaluate(specimens);
@@ -107,21 +84,21 @@ inline auto genetic_algorithm<Specimen, Rating>::operator()() const -> evaluated
 }
 
 template<class Specimen, class Rating>
-inline void genetic_algorithm<Specimen, Rating>::evaluate(std::vector<evaluated_specimen>& specimens) const {
+inline void genetic_algorithm<Specimen, Rating>::evaluate(std::vector<evaluated_specimen_type>& specimens) const {
 	for (auto&& specimen : specimens) {
-		specimen.rating = context.evaluator(specimen.value);
+		specimen.evaluate(context.evaluator);
 	}
 }
 
 template<class Specimen, class Rating>
-inline auto genetic_algorithm<Specimen, Rating>::breed(const std::vector<evaluated_specimen>& specimens) const -> std::vector<evaluated_specimen> {
+inline auto genetic_algorithm<Specimen, Rating>::breed(const std::vector<evaluated_specimen_type>& specimens) const -> std::vector<evaluated_specimen_type> {
 	const std::size_t specimen_count = specimens.size();
-	std::vector<evaluated_specimen> result;
+	std::vector<evaluated_specimen_type> result;
 	result.reserve(specimen_count * (specimen_count - 1) / 2);
 	for (auto it = specimens.begin(); it != specimens.end(); ++it) {
-		const specimen_type& father = it->value;
-		std::for_each(std::next(it), specimens.end(), [&](const evaluated_specimen& mother) {
-			result.emplace_back(evaluated_specimen {context.breeder(father, mother.value)});
+		const specimen_type& father = it->value();
+		std::for_each(std::next(it), specimens.end(), [&](const evaluated_specimen_type& mother) {
+			result.emplace_back(evaluated_specimen_type {context.breeder(father, mother.value())});
 		});
 	}
 	return result;

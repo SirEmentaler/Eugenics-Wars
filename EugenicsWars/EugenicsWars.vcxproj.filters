@@ -32,5 +32,8 @@
     <ClInclude Include="elitist_selection.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="evaluated_specimen.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
