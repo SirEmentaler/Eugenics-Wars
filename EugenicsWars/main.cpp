@@ -22,9 +22,9 @@ private:
 int main() {
 	using algorithm_type = genetic_algorithm<point, double>;
 	algorithm_type::context_type context;
-	context.initial_population_size = 1000;
-	context.breeding_population_size = 50;
-	context.max_iterations = 1000;
+	context.initial_population_size = 10000;
+	context.breeding_population_size = 100;
+	context.max_iterations = 10;
 	context.generator = point_generator();
 	context.evaluator = [](const point& point) {
 		const double a = point.x * point.x - point.y;
