@@ -31,41 +31,42 @@
 #include <utility>
 #include <type_traits>
 #include <vector>
+#include "identity.h"
 
-template<class UniformRandomBitGenerator>
+template<class UniformRandomBitGenerator, class Function = identity<void>>
 class roulette_wheel_selection {
 public:
-	roulette_wheel_selection(const UniformRandomBitGenerator& g);
-	roulette_wheel_selection(UniformRandomBitGenerator&& g) noexcept;
+	roulette_wheel_selection(const UniformRandomBitGenerator& g, Function f = Function());
+	roulette_wheel_selection(UniformRandomBitGenerator&& g, Function f = Function()) noexcept;
 	template<class Specimen>
 	void operator()(std::vector<Specimen>& specimens, std::size_t n);
 private:
 	UniformRandomBitGenerator rand;
+	Function probability_function;
 };
 
-template<class UniformRandomBitGenerator>
-inline roulette_wheel_selection<UniformRandomBitGenerator>::roulette_wheel_selection(const UniformRandomBitGenerator& g)
-	: rand(g) {}
+template<class UniformRandomBitGenerator, class Function>
+inline roulette_wheel_selection<UniformRandomBitGenerator, Function>::roulette_wheel_selection(const UniformRandomBitGenerator& g, Function f)
+	: rand(g), probability_function(f) {}
 
-template<class UniformRandomBitGenerator>
-inline roulette_wheel_selection<UniformRandomBitGenerator>::roulette_wheel_selection(UniformRandomBitGenerator&& g) noexcept
-	: rand(std::move(g)) {}
+template<class UniformRandomBitGenerator, class Function>
+inline roulette_wheel_selection<UniformRandomBitGenerator, Function>::roulette_wheel_selection(UniformRandomBitGenerator&& g, Function f) noexcept
+	: rand(std::move(g)), probability_function(f) {}
 
-template<class UniformRandomBitGenerator>
+template<class UniformRandomBitGenerator, class Function>
 template<class Specimen>
-inline void roulette_wheel_selection<UniformRandomBitGenerator>::operator()(std::vector<Specimen>& specimens, std::size_t n) {
-	using sample_type = std::common_type_t<double, typename Specimen::rating_type>;
+inline void roulette_wheel_selection<UniformRandomBitGenerator, Function>::operator()(std::vector<Specimen>& specimens, std::size_t n) {
+	using sample_type = std::common_type_t<double, decltype(probability_function(std::declval<typename Specimen::rating_type>()))>;
 	using iterator_type = typename std::vector<Specimen>::iterator;
 	using pair_type = std::pair<sample_type, iterator_type>;
 	std::vector<pair_type> samples;
 	samples.reserve(specimens.size());
 	for (iterator_type it = specimens.begin(); it != specimens.end(); ++it) {
-		const std::exponential_distribution<sample_type> distribution(it->rating());
+		const sample_type probability = probability_function(it->rating());
+		const std::exponential_distribution<sample_type> distribution(probability);
 		samples.emplace_back(distribution(rand), it);
 	}
-	std::nth_element(samples.begin(), samples.begin() + n, samples.end(), [](const pair_type& lhs, const pair_type& rhs) {
-		return lhs.first > rhs.first;
-	});
+	std::nth_element(samples.begin(), samples.begin() + n, samples.end());
 	samples.resize(n);
 	iterator_type it = specimens.begin();
 	for (const auto& sample : samples) {

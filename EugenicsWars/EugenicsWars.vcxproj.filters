@@ -35,5 +35,8 @@
     <ClInclude Include="evaluated_specimen.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="identity.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

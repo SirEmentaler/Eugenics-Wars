@@ -39,7 +39,9 @@ int main() {
 		const double b = 1 - point.x;
 		return a * a * 100.0 + b * b + 10.0;
 	};
-	context.selector = roulette_wheel_selection(std::move(rand));
+	context.selector = roulette_wheel_selection(std::move(rand), [](double x) {
+		return 1.0 / x;
+	});
 	context.breeder = [](const point& lhs, const point& rhs) {
 		return point {(lhs.x + rhs.x) / 2.0, (lhs.y + rhs.y) / 2.0};
 	};
