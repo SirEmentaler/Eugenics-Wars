@@ -74,7 +74,7 @@ constexpr auto evaluated_specimen<Specimen, Rating>::rating() const -> rating_ty
 template<class Specimen, class Rating>
 template<class Function>
 inline void evaluated_specimen<Specimen, Rating>::evaluate(Function&& evaluator) {
-	grade.emplace(evaluator(specimen));
+	grade.emplace(evaluator(std::as_const(specimen)));
 }
 
 template<class Specimen, class Rating>
