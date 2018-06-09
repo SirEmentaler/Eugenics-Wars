@@ -32,14 +32,14 @@ int main() {
 	context.initial_population_size = 10000;
 	context.breeding_population_size = 200;
 	context.max_iterations = 10;
-	std::mt19937_64 rand(std::chrono::high_resolution_clock::now().time_since_epoch().count());
+	const std::mt19937_64 rand(std::chrono::high_resolution_clock::now().time_since_epoch().count());
 	context.generator = point_generator(rand);
 	context.evaluator = [](const point& point) {
 		const double a = point.x * point.x - point.y;
 		const double b = 1 - point.x;
 		return a * a * 100.0 + b * b + 10.0;
 	};
-	context.selector = roulette_wheel_selection(std::move(rand), [](double x) {
+	context.selector = roulette_wheel_selection(rand, [](double x) {
 		return 1.0 / x;
 	});
 	context.breeder = [](const point& lhs, const point& rhs) {
