@@ -36,7 +36,7 @@
 template<class UniformRandomBitGenerator, class Function = identity<>>
 class roulette_wheel_selection {
 public:
-	roulette_wheel_selection(const UniformRandomBitGenerator& g, Function f = Function());
+	explicit roulette_wheel_selection(const UniformRandomBitGenerator& g, Function f = Function());
 	template<class Specimen>
 	void operator()(std::vector<Specimen>& specimens, std::size_t n);
 private:

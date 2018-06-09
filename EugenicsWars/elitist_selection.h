@@ -33,7 +33,7 @@
 template<class Compare = std::greater<>>
 class elitist_selection {
 public:
-	elitist_selection(const Compare& comp = Compare());
+	explicit elitist_selection(const Compare& comp = Compare());
 	template<class Specimen>
 	void operator()(std::vector<Specimen>& specimens, std::size_t n) const;
 private:

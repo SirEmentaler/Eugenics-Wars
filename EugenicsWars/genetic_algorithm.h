@@ -40,8 +40,8 @@ public:
 	using rating_type = Rating;
 	using evaluated_specimen_type = evaluated_specimen<Specimen, Rating>;
 	struct context_type;
-	genetic_algorithm(const context_type& context);
-	genetic_algorithm(context_type&& context);
+	explicit genetic_algorithm(const context_type& context);
+	explicit genetic_algorithm(context_type&& context);
 	evaluated_specimen_type operator()() const;
 private:
 	void evaluate(std::vector<evaluated_specimen_type>& specimens) const;
