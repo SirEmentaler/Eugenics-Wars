@@ -27,17 +27,27 @@
 
 #include <algorithm>
 #include <cstddef>
+#include <functional>
 #include <vector>
 
+template<class Compare = std::greater<>>
 class elitist_selection {
 public:
+	elitist_selection(const Compare& comp = Compare());
 	template<class Specimen>
 	void operator()(std::vector<Specimen>& specimens, std::size_t n) const;
+private:
+	Compare comparator;
 };
 
+template<class Compare>
+inline elitist_selection<Compare>::elitist_selection(const Compare& comp)
+	: comparator(comp) {}
+
+template<class Compare>
 template<class Specimen>
-inline void elitist_selection::operator()(std::vector<Specimen>& specimens, std::size_t n) const {
-	std::nth_element(specimens.begin(), specimens.begin() + n, specimens.end());
+inline void elitist_selection<Compare>::operator()(std::vector<Specimen>& specimens, std::size_t n) const {
+	std::nth_element(specimens.begin(), specimens.begin() + n, specimens.end(), comparator);
 	specimens.resize(n);
 }
 
