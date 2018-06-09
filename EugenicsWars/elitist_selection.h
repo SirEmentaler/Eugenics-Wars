@@ -47,7 +47,9 @@ inline elitist_selection<Compare>::elitist_selection(const Compare& comp)
 template<class Compare>
 template<class Specimen>
 inline void elitist_selection<Compare>::operator()(std::vector<Specimen>& specimens, std::size_t n) const {
-	std::nth_element(specimens.rbegin(), specimens.rend() - n, specimens.rend(), comparator);
+	std::nth_element(specimens.begin(), specimens.begin() + n, specimens.end(), [this](const Specimen& lhs, const Specimen& rhs) {
+		return comparator(rhs.rating(), lhs.rating());
+	});
 	specimens.resize(n);
 }
 
