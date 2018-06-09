@@ -42,9 +42,9 @@ int main() {
 	const std::mt19937_64 rand(std::chrono::high_resolution_clock::now().time_since_epoch().count());
 	using algorithm_type = genetic_algorithm<point, double>;
 	algorithm_type::context_type context;
-	context.initial_population_size = 10000;
-	context.breeding_population_size = 100;
-	context.max_iterations = 10;
+	context.initial_population_size = 200;
+	context.breeding_population_size = 15;
+	context.max_iterations = 100;
 	context.generator = point_generator(rand);
 	context.evaluator = f;
 	context.selector = roulette_wheel_selection(rand, [](double x) noexcept { return 1.0 / x; });
