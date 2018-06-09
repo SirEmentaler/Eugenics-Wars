@@ -30,7 +30,7 @@
 #include <functional>
 #include <vector>
 
-template<class Compare = std::greater<>>
+template<class Compare = std::less<>>
 class elitist_selection {
 public:
 	explicit elitist_selection(const Compare& comp = Compare());
@@ -47,7 +47,7 @@ inline elitist_selection<Compare>::elitist_selection(const Compare& comp)
 template<class Compare>
 template<class Specimen>
 inline void elitist_selection<Compare>::operator()(std::vector<Specimen>& specimens, std::size_t n) const {
-	std::nth_element(specimens.begin(), specimens.begin() + n, specimens.end(), comparator);
+	std::nth_element(specimens.rbegin(), specimens.rend() - n, specimens.rend(), comparator);
 	specimens.resize(n);
 }
 
