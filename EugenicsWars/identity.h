@@ -25,25 +25,16 @@
 #ifndef EUGENICS_WARS_IDENTITY_H
 #define EUGENICS_WARS_IDENTITY_H
 
-template<class T = void>
+#include <utility>
+
 struct identity {
-	constexpr const T& operator()(const T& value) const noexcept;
-};
-
-template<>
-struct identity<void> {
 	template<class T>
-	constexpr const T& operator()(const T& value) const noexcept;
+	constexpr T&& operator()(T&& t) const noexcept;
 };
 
 template<class T>
-constexpr const T& identity<T>::operator()(const T& value) const noexcept {
-	return value;
-}
-
-template<class T>
-constexpr const T& identity<void>::operator()(const T& value) const noexcept {
-	return value;
+constexpr T&& identity::operator()(T&& t) const noexcept {
+	return std::forward<T>(t);
 }
 
 #endif
