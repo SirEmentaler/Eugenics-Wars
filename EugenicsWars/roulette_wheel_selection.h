@@ -33,7 +33,7 @@
 #include <vector>
 #include "identity.h"
 
-template<class UniformRandomBitGenerator, class Function = identity<void>>
+template<class UniformRandomBitGenerator, class Function = identity<>>
 class roulette_wheel_selection {
 public:
 	roulette_wheel_selection(const UniformRandomBitGenerator& g, Function f = Function());
