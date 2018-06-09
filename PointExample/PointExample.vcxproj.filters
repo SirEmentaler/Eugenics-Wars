@@ -19,4 +19,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="point.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="point_generator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="point_mutator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
 </Project>
