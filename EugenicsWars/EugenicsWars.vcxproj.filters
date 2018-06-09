@@ -38,5 +38,11 @@
     <ClInclude Include="identity.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="mutating_breeder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mutate_with_probability.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

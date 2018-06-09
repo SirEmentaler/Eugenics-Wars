@@ -5,6 +5,8 @@
 #include <random>
 #include "elitist_selection.h"
 #include "genetic_algorithm.h"
+#include "mutate_with_probability.h"
+#include "mutating_breeder.h"
 #include "roulette_wheel_selection.h"
 
 struct point {
@@ -50,7 +52,7 @@ int main() {
 	context.generator = point_generator(rand);
 	context.evaluator = f;
 	context.selector = roulette_wheel_selection(rand, &negative_exponent);
-	context.breeder = average;
+	context.breeder = mutating_breeder(&average, mutate_with_probability(rand, 0.5, identity()));
 	context.comparator = std::greater<>();
 	algorithm_type algorithm(context);
 	repeat(10, [&] {

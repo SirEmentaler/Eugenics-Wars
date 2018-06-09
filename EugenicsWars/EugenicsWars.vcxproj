@@ -180,6 +180,8 @@
     <ClInclude Include="evaluated_specimen.h" />
     <ClInclude Include="genetic_algorithm.h" />
     <ClInclude Include="identity.h" />
+    <ClInclude Include="mutate_with_probability.h" />
+    <ClInclude Include="mutating_breeder.h" />
     <ClInclude Include="repeat.h" />
     <ClInclude Include="roulette_wheel_selection.h" />
   </ItemGroup>
