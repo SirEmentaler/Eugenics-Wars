@@ -1,4 +1,5 @@
 #include <chrono>
+#include <cmath>
 #include <functional>
 #include <iostream>
 #include <random>
@@ -25,25 +26,31 @@ private:
 	std::uniform_real_distribution<> range_y {0.0, 15.0};
 };
 
+double f(const point& point) noexcept {
+	const double a = point.x * point.x - point.y;
+	const double b = 1 - point.x;
+	return a * a * 100.0 + b * b + 10.0;
+}
+
+point average(const point& lhs, const point& rhs) noexcept {
+	return {(lhs.x + rhs.x) / 2.0, (lhs.y + rhs.y) / 2.0};
+}
+
+double negative_exponent(double x) noexcept {
+	return std::exp(-x);
+}
+
 int main() {
+	const std::mt19937_64 rand(std::chrono::high_resolution_clock::now().time_since_epoch().count());
 	using algorithm_type = genetic_algorithm<point, double>;
 	algorithm_type::context_type context;
 	context.initial_population_size = 10000;
 	context.breeding_population_size = 200;
 	context.max_iterations = 10;
-	const std::mt19937_64 rand(std::chrono::high_resolution_clock::now().time_since_epoch().count());
 	context.generator = point_generator(rand);
-	context.evaluator = [](const point& point) {
-		const double a = point.x * point.x - point.y;
-		const double b = 1 - point.x;
-		return a * a * 100.0 + b * b + 10.0;
-	};
-	context.selector = roulette_wheel_selection(rand, [](double x) {
-		return 1.0 / x;
-	});
-	context.breeder = [](const point& lhs, const point& rhs) {
-		return point {(lhs.x + rhs.x) / 2.0, (lhs.y + rhs.y) / 2.0};
-	};
+	context.evaluator = f;
+	context.selector = roulette_wheel_selection(rand, &negative_exponent);
+	context.breeder = average;
 	context.comparator = std::greater<>();
 	algorithm_type algorithm(context);
 	repeat(10, [&] {
