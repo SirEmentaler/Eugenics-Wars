@@ -175,6 +175,7 @@
   <ItemGroup>
     <ClInclude Include="elitist_selection.h" />
     <ClInclude Include="evaluated_specimen.h" />
+    <ClInclude Include="genetics.h" />
     <ClInclude Include="genetic_algorithm.h" />
     <ClInclude Include="identity.h" />
     <ClInclude Include="mutate_with_probability.h" />

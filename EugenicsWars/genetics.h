@@ -22,39 +22,16 @@
 //
 ////////////////////////////////////////////////////////////
 
-#include <chrono>
-#include <cmath>
-#include <functional>
-#include <iostream>
-#include <random>
-#include <genetics.h>
-#include "point.h"
-#include "point_generator.h"
-#include "point_mutator.h"
+#ifndef EUGENICS_WARS_GENETICS_H
+#define EUGENICS_WARS_GENETICS_H
 
-double f(const point& p) noexcept {
-	const double a = p.x * p.x - p.y;
-	const double b = 1 - p.x;
-	return a * a * 100.0 + b * b + 10.0;
-}
+#include "elitist_selection.h"
+#include "evaluated_specimen.h"
+#include "genetic_algorithm.h"
+#include "identity.h"
+#include "mutate_with_probability.h"
+#include "mutating_breeder.h"
+#include "repeat.h"
+#include "roulette_wheel_selection.h"
 
-int main() {
-	const std::mt19937_64 rand(std::chrono::high_resolution_clock::now().time_since_epoch().count());
-	using algorithm_type = genetic_algorithm<point, double>;
-	algorithm_type::context_type context;
-	context.initial_population_size = 10000;
-	context.breeding_population_size = 100;
-	context.max_iterations = 10;
-	context.generator = point_generator(rand);
-	context.evaluator = f;
-	context.selector = roulette_wheel_selection(rand, [](double x) noexcept { return std::exp(-x); });
-	context.breeder = mutating_breeder(&average, mutate_with_probability(rand, 0.25, point_mutator(rand)));
-	context.comparator = std::greater<>();
-	algorithm_type algorithm(context);
-	repeat(10, [&] {
-		const auto result = algorithm();
-		std::cout << "Minimum found has value " << result.rating() << " at point ";
-		std::cout << result.value().x << ", " << result.value().y << std::endl;
-	});
-	return 0;
-}
+#endif
