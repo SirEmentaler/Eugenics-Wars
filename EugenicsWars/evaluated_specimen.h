@@ -79,34 +79,4 @@ inline void evaluated_specimen<Specimen, Rating>::evaluate(Function&& evaluator)
 	grade.emplace(evaluator(std::as_const(specimen)));
 }
 
-template<class Specimen, class Rating>
-constexpr bool operator==(const evaluated_specimen<Specimen, Rating>& lhs, const evaluated_specimen<Specimen, Rating>& rhs) {
-	return lhs.rating() == rhs.rating();
-}
-
-template<class Specimen, class Rating>
-constexpr bool operator!=(const evaluated_specimen<Specimen, Rating>& lhs, const evaluated_specimen<Specimen, Rating>& rhs) {
-	return lhs.rating() != rhs.rating();
-}
-
-template<class Specimen, class Rating>
-constexpr bool operator<(const evaluated_specimen<Specimen, Rating>& lhs, const evaluated_specimen<Specimen, Rating>& rhs) {
-	return lhs.rating() < rhs.rating();
-}
-
-template<class Specimen, class Rating>
-constexpr bool operator>(const evaluated_specimen<Specimen, Rating>& lhs, const evaluated_specimen<Specimen, Rating>& rhs) {
-	return lhs.rating() > rhs.rating();
-}
-
-template<class Specimen, class Rating>
-constexpr bool operator<=(const evaluated_specimen<Specimen, Rating>& lhs, const evaluated_specimen<Specimen, Rating>& rhs) {
-	return lhs.rating() <= rhs.rating();
-}
-
-template<class Specimen, class Rating>
-constexpr bool operator>=(const evaluated_specimen<Specimen, Rating>& lhs, const evaluated_specimen<Specimen, Rating>& rhs) {
-	return lhs.rating() >= rhs.rating();
-}
-
 #endif
