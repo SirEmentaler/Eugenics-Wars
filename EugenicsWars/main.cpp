@@ -1,4 +1,5 @@
 #include <chrono>
+#include <functional>
 #include <iostream>
 #include <random>
 #include "elitist_selection.h"
@@ -15,8 +16,6 @@ class point_generator {
 public:
 	point_generator(const UniformRandomBitGenerator& g)
 		: rand(g) {}
-	point_generator(UniformRandomBitGenerator&& g)
-		: rand(std::move(g)) {}
 	point operator()() {
 		return point {range_x(rand), range_y(rand)};
 	}
@@ -45,9 +44,12 @@ int main() {
 	context.breeder = [](const point& lhs, const point& rhs) {
 		return point {(lhs.x + rhs.x) / 2.0, (lhs.y + rhs.y) / 2.0};
 	};
+	context.comparator = std::greater<>();
 	algorithm_type algorithm(context);
-	const auto result = algorithm();
-	std::cout << "Minimum found has value " << result.rating() << " at point ";
-	std::cout << result.value().x << ", " << result.value().y << std::endl;
+	repeat(10, [&] {
+		const auto result = algorithm();
+		std::cout << "Minimum found has value " << result.rating() << " at point ";
+		std::cout << result.value().x << ", " << result.value().y << std::endl;
+	});
 	return 0;
 }

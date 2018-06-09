@@ -58,6 +58,7 @@ struct genetic_algorithm<Specimen, Rating>::context_type {
 	std::function<rating_type(const specimen_type&)> evaluator;
 	std::function<void(std::vector<evaluated_specimen_type>&, std::size_t)> selector;
 	std::function<specimen_type(const specimen_type&, const specimen_type&)> breeder;
+	std::function<bool(const evaluated_specimen_type&, const evaluated_specimen_type&)> comparator;
 };
 
 template<class Specimen, class Rating>
@@ -80,7 +81,7 @@ inline auto genetic_algorithm<Specimen, Rating>::operator()() const -> evaluated
 		specimens = breed(specimens);
 	});
 	evaluate(specimens);
-	return std::move(*std::min_element(specimens.begin(), specimens.end()));
+	return std::move(*std::max_element(specimens.begin(), specimens.end(), context.comparator));
 }
 
 template<class Specimen, class Rating>
