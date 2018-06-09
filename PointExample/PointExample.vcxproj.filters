@@ -15,29 +15,8 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="genetic_algorithm.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="repeat.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="roulette_wheel_selection.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="elitist_selection.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="evaluated_specimen.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="identity.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="mutating_breeder.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="mutate_with_probability.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
