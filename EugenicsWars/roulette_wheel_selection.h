@@ -25,18 +25,53 @@
 #ifndef EUGENICS_WARS_ROULETTE_WHEEL_SELECTION_H
 #define EUGENICS_WARS_ROULETTE_WHEEL_SELECTION_H
 
+#include <algorithm>
 #include <cstddef>
+#include <random>
+#include <utility>
+#include <type_traits>
 #include <vector>
 
+template<class UniformRandomBitGenerator>
 class roulette_wheel_selection {
 public:
+	roulette_wheel_selection(const UniformRandomBitGenerator& g);
+	roulette_wheel_selection(UniformRandomBitGenerator&& g) noexcept;
 	template<class Specimen>
-	void operator()(std::vector<Specimen>& specimens, std::size_t n) const;
+	void operator()(std::vector<Specimen>& specimens, std::size_t n);
+private:
+	UniformRandomBitGenerator rand;
 };
 
+template<class UniformRandomBitGenerator>
+inline roulette_wheel_selection<UniformRandomBitGenerator>::roulette_wheel_selection(const UniformRandomBitGenerator& g)
+	: rand(g) {}
+
+template<class UniformRandomBitGenerator>
+inline roulette_wheel_selection<UniformRandomBitGenerator>::roulette_wheel_selection(UniformRandomBitGenerator&& g) noexcept
+	: rand(std::move(g)) {}
+
+template<class UniformRandomBitGenerator>
 template<class Specimen>
-inline void roulette_wheel_selection::operator()(std::vector<Specimen>& specimens, std::size_t n) const {
-	// TODO
+inline void roulette_wheel_selection<UniformRandomBitGenerator>::operator()(std::vector<Specimen>& specimens, std::size_t n) {
+	using sample_type = std::common_type_t<double, typename Specimen::rating_type>;
+	using iterator_type = typename std::vector<Specimen>::iterator;
+	using pair_type = std::pair<sample_type, iterator_type>;
+	std::vector<pair_type> samples;
+	samples.reserve(specimens.size());
+	for (iterator_type it = specimens.begin(); it != specimens.end(); ++it) {
+		const std::exponential_distribution<sample_type> distribution(it->rating());
+		samples.emplace_back(distribution(rand), it);
+	}
+	std::nth_element(samples.begin(), samples.begin() + n, samples.end(), [](const pair_type& lhs, const pair_type& rhs) {
+		return lhs.first > rhs.first;
+	});
+	samples.resize(n);
+	iterator_type it = specimens.begin();
+	for (const auto& sample : samples) {
+		std::iter_swap(it++, sample.second);
+	}
+	specimens.resize(n);
 }
 
 #endif
