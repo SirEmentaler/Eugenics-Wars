@@ -99,7 +99,7 @@ template<class... Functions>
 inline void genetic_algorithm<Specimen, Rating>::communicate_stage(stage_type stage, const std::vector<evaluated_specimen_type>& specimens, Functions&&... observers) const {
 	(void)stage;
 	(void)specimens;
-	((void)(observers(*this, stage, specimens)), ...);
+	((void)observers(*this, stage, specimens), ...);
 }
 
 template<class Specimen, class Rating>
