@@ -27,6 +27,7 @@
 #include <fstream>
 #include <functional>
 #include <iostream>
+#include <limits>
 #include <random>
 #include <genetics.h>
 #include "point.h"
@@ -34,6 +35,8 @@
 #include "point_mutator.h"
 
 double f(const point& p) noexcept {
+	if (p.x < 0.0 || p.x > 18.0 || p.y < 0.0 || p.y > 15.0 || p.x * p.y < 10.0 || p.x * p.y + p.x - p.y > 3.5)
+		return std::numeric_limits<double>::max();
 	const double a = p.x * p.x - p.y;
 	const double b = 1 - p.x;
 	return a * a * 100.0 + b * b + 10.0;
@@ -43,8 +46,8 @@ int main() {
 	const std::mt19937_64 rand(std::chrono::high_resolution_clock::now().time_since_epoch().count());
 	using algorithm_type = genetic_algorithm<point, double>;
 	algorithm_type::context_type context;
-	context.initial_population_size = 200;
-	context.breeding_population_size = 15;
+	context.initial_population_size = 10000;
+	context.breeding_population_size = 50;
 	context.max_iterations = 100;
 	context.generator = point_generator(rand);
 	context.evaluator = f;
