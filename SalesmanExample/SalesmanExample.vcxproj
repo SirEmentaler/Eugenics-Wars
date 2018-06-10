@@ -19,7 +19,16 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="disjoint_set_data_structure.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="path_merger.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="disjoint_set_data_structure.h" />
+    <ClInclude Include="path_evaluator.h" />
+    <ClInclude Include="path_merger.h" />
+    <ClInclude Include="permutation.h" />
+    <ClInclude Include="permutation_generator.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
