@@ -29,7 +29,6 @@
   <ItemGroup>
     <ClCompile Include="disjoint_set_data_structure.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="path_merger.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="disjoint_set_data_structure.h" />

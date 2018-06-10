@@ -18,9 +18,6 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="path_merger.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="disjoint_set_data_structure.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

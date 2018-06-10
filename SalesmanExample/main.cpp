@@ -54,7 +54,7 @@ int main() {
 	context.generator = permutation_generator(n, rand);
 	context.evaluator = path_evaluator(matrix);
 	context.selector = elitist_selection<std::greater<>>();
-	context.breeder = path_merger();
+	context.breeder = path_merger(rand);
 	context.comparator = std::greater<>();
 	algorithm_type algorithm(context);
 #ifdef LOGGING
@@ -67,11 +67,7 @@ int main() {
 			logger
 #endif
 		);
-		std::cout << "Best path found has length " << result.rating();
-		std::cout << " and visits cities in this order:\n";
-		for (const auto& index : result.value()) {
-			std::cout << index << ' ';
-		}
+		std::cout << "Best path found has length " << result.rating() << ":\n" << result.value() << std::endl;
 	});
 	return 0;
 }
