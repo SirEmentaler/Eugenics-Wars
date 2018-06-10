@@ -63,7 +63,7 @@ permutation path_merger<UniformRandomBitGenerator>::operator()(const permutation
 	std::set_intersection(lhs_edges.begin(), lhs_edges.end(), rhs_edges.begin(), rhs_edges.end(), std::back_inserter(result_edges));
 	disjoint_set_data_structure components(size);
 	std::vector<unsigned> missing_edges(size, 2);
-	for (const auto&[left, right] : result_edges) {
+	for (const auto& [left, right] : result_edges) {
 		components.merge(left, right);
 		missing_edges[left]--;
 		missing_edges[right]--;
@@ -74,11 +74,11 @@ permutation path_merger<UniformRandomBitGenerator>::operator()(const permutation
 	while (!std::all_of(std::begin(spans), std::end(spans), std::mem_fn(&gsl::span<edge_type>::empty))) {
 		for (auto&& span : spans) {
 			auto it = std::find_if(span.begin(), span.end(), [&](const edge_type& edge) {
-				const auto&[lhs, rhs] = edge;
+				const auto& [lhs, rhs] = edge;
 				return missing_edges[lhs] && missing_edges[rhs] && components.find(lhs) != components.find(rhs);
 			});
 			if (it != span.end()) {
-				const auto&[left, right] = *it;
+				const auto& [left, right] = *it;
 				result_edges.emplace_back(left, right);
 				components.merge(left, right);
 				missing_edges[left]--;
@@ -129,7 +129,7 @@ permutation path_merger<UniformRandomBitGenerator>::to_permutation(const edge_ve
 	for (auto&& node : graph) {
 		node.reserve(2);
 	}
-	for (const auto&[lhs, rhs] : edges) {
+	for (const auto& [lhs, rhs] : edges) {
 		graph[lhs].push_back(rhs);
 		graph[rhs].push_back(lhs);
 	}
