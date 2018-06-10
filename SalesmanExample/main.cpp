@@ -55,6 +55,8 @@ int main() {
 	context.generator = permutation_generator(n, rand);
 	context.evaluator = path_evaluator(matrix);
 	context.selector = elitist_selection<std::greater<>>();
+	// Also try:
+	// context.selector = roulette_wheel_selection(rand, [](long long x) { return std::exp(-x / 200.0); });
 	context.breeder = path_merger(rand);
 	context.comparator = std::greater<>();
 	std::ifstream in_pos("positions.txt");
