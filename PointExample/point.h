@@ -25,12 +25,19 @@
 #ifndef POINT_EXAMPLE_POINT_H
 #define POINT_EXAMPLE_POINT_H
 
+#include <ostream>
+
 struct point {
 	double x;
 	double y;
 };
 
-point average(const point& lhs, const point& rhs) noexcept {
+template<class CharT, class Traits>
+std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT, Traits>& os, const point& p) {
+	return os << '(' << p.x << ',' << p.y << ')';
+}
+
+constexpr point average(const point& lhs, const point& rhs) noexcept {
 	return {(lhs.x + rhs.x) / 2.0, (lhs.y + rhs.y) / 2.0};
 }
 

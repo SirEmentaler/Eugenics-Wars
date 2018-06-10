@@ -24,6 +24,7 @@
 
 #include <chrono>
 #include <cmath>
+#include <fstream>
 #include <functional>
 #include <iostream>
 #include <random>
@@ -51,8 +52,16 @@ int main() {
 	context.breeder = mutating_breeder(&average, point_mutator(rand));
 	context.comparator = std::greater<>();
 	algorithm_type algorithm(context);
+#ifdef LOGGING
+	std::ofstream out_log("point.log");
+	default_logger logger(out_log);
+#endif
 	repeat(10, [&] {
-		const auto result = algorithm();
+		const auto result = algorithm(
+#ifdef LOGGING
+			logger
+#endif
+		);
 		std::cout << "Minimum found has value " << result.rating() << " at point ";
 		std::cout << result.value().x << ", " << result.value().y << std::endl;
 	});

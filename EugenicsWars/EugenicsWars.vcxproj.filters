@@ -42,5 +42,8 @@
     <ClInclude Include="genetics.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="default_logger.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

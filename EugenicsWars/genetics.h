@@ -25,6 +25,7 @@
 #ifndef EUGENICS_WARS_GENETICS_H
 #define EUGENICS_WARS_GENETICS_H
 
+#include "default_logger.h"
 #include "elitist_selection.h"
 #include "evaluated_specimen.h"
 #include "genetic_algorithm.h"

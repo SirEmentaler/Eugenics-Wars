@@ -40,10 +40,14 @@ public:
 	using rating_type = Rating;
 	using evaluated_specimen_type = evaluated_specimen<Specimen, Rating>;
 	struct context_type;
+	enum struct stage_type { generated, selected, bred };
 	explicit genetic_algorithm(const context_type& context);
 	explicit genetic_algorithm(context_type&& context);
-	evaluated_specimen_type operator()() const;
+	template<class... Functions>
+	evaluated_specimen_type operator()(Functions&&... observers) const;
 private:
+	template<class... Functions>
+	void communicate_stage(stage_type stage, const std::vector<evaluated_specimen_type>& specimens, Functions&&... observers) const;
 	void evaluate(std::vector<evaluated_specimen_type>& specimens) const;
 	std::vector<evaluated_specimen_type> breed(const std::vector<evaluated_specimen_type>& specimens) const;
 	context_type context;
@@ -70,20 +74,32 @@ inline genetic_algorithm<Specimen, Rating>::genetic_algorithm(context_type&& con
 	: context(std::move(context)) {}
 
 template<class Specimen, class Rating>
-inline auto genetic_algorithm<Specimen, Rating>::operator()() const -> evaluated_specimen_type {
+template<class... Functions>
+inline auto genetic_algorithm<Specimen, Rating>::operator()(Functions&&... observers) const -> evaluated_specimen_type {
 	std::vector<evaluated_specimen_type> specimens(context.initial_population_size);
 	for (auto&& specimen : specimens) {
 		specimen.value() = context.generator();
 	}
-	repeat(context.max_iterations, [&] {
-		evaluate(specimens);
-		context.selector(specimens, context.breeding_population_size);
-		specimens = breed(specimens);
-	});
 	evaluate(specimens);
+	communicate_stage(stage_type::generated, specimens, std::forward<Functions>(observers)...);
+	repeat(context.max_iterations, [&] {
+		context.selector(specimens, context.breeding_population_size);
+		communicate_stage(stage_type::selected, specimens, std::forward<Functions>(observers)...);
+		specimens = breed(specimens);
+		evaluate(specimens);
+		communicate_stage(stage_type::bred, specimens, std::forward<Functions>(observers)...);
+	});
 	return std::move(*std::max_element(specimens.begin(), specimens.end(), [this](const evaluated_specimen_type& lhs, const evaluated_specimen_type& rhs) {
 		return context.comparator(lhs.rating(), rhs.rating());
 	}));
+}
+
+template<class Specimen, class Rating>
+template<class... Functions>
+inline void genetic_algorithm<Specimen, Rating>::communicate_stage(stage_type stage, const std::vector<evaluated_specimen_type>& specimens, Functions&&... observers) const {
+	(void)stage;
+	(void)specimens;
+	((void)(observers(*this, stage, specimens)), ...);
 }
 
 template<class Specimen, class Rating>

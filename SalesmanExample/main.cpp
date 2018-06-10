@@ -57,8 +57,16 @@ int main() {
 	context.breeder = path_merger();
 	context.comparator = std::greater<>();
 	algorithm_type algorithm(context);
+#ifdef LOGGING
+	std::ofstream out_log("salesman.log");
+	default_logger logger(out_log);
+#endif
 	repeat(10, [&] {
-		const auto result = algorithm();
+		const auto result = algorithm(
+#ifdef LOGGING
+			logger
+#endif
+		);
 		std::cout << "Best path found has length " << result.rating();
 		std::cout << " and visits cities in this order:\n";
 		for (const auto& index : result.value()) {

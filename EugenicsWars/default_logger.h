@@ -22,25 +22,46 @@
 //
 ////////////////////////////////////////////////////////////
 
-#ifndef SALESMAN_EXAMPLE_PERMUTATION_H
-#define SALESMAN_EXAMPLE_PERMUTATION_H
+#ifndef EUGENICS_WARS_DEFAULT_LOGGER_H
+#define EUGENICS_WARS_DEFAULT_LOGGER_H
 
-#include <iterator>
 #include <ostream>
 #include <vector>
 
-using permutation = std::vector<unsigned>;
-
 template<class CharT, class Traits>
-std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT, Traits>& os, const permutation& perm) {
-	os << '[';
-	if (!perm.empty()) {
-		std::for_each(perm.begin(), std::prev(perm.end()), [&](unsigned element) {
-			os << element << ',';
-		});
-		os << perm.back();
-	}
-	return os << ']';
-}
+class default_logger {
+public:
+	using ostream_type = std::basic_ostream<CharT, Traits>;
+	explicit default_logger(ostream_type& out);
+	explicit default_logger(ostream_type&&) = delete;
+	template<class Algorithm>
+	void operator()(const Algorithm&, typename Algorithm::stage_type stage, const std::vector<typename Algorithm::evaluated_specimen_type>& specimens) const;
+private:
+	ostream_type& out;
+};
 
 #endif
+
+template<class CharT, class Traits>
+inline default_logger<CharT, Traits>::default_logger(ostream_type& out)
+	: out(out) {}
+
+template<class CharT, class Traits>
+template<class Algorithm>
+inline void default_logger<CharT, Traits>::operator()(const Algorithm&, typename Algorithm::stage_type stage, const std::vector<typename Algorithm::evaluated_specimen_type>& specimens) const {
+	using stage_type = typename Algorithm::stage_type;
+	switch (stage) {
+		case stage_type::generated:
+			out << "Generated new specimens:\n";
+			break;
+		case stage_type::selected:
+			out << "Selected the fittest specimens:\n";
+			break;
+		case stage_type::bred:
+			out << "Created a new generation:\n";
+			break;
+	}
+	for (const auto& specimen : specimens) {
+		out << specimen.value() << " rated " << specimen.rating() << '\n';
+	}
+}
