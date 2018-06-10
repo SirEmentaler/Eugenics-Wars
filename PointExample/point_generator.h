@@ -35,8 +35,8 @@ public:
 	point operator()();
 private:
 	UniformRandomBitGenerator rand;
-	std::uniform_real_distribution<> range_x {0.0, 2.0};
-	std::uniform_real_distribution<> range_y {5.0, 15.0};
+	std::uniform_real_distribution<> range_x {0.0, 1.5};
+	std::uniform_real_distribution<> range_y {7.5, 15.0};
 };
 
 template<class UniformRandomBitGenerator>

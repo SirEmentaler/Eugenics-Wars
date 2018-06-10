@@ -47,12 +47,12 @@ int main() {
 	using algorithm_type = genetic_algorithm<point, double>;
 	algorithm_type::context_type context;
 	context.initial_population_size = 10000;
-	context.breeding_population_size = 50;
-	context.max_iterations = 100;
+	context.breeding_population_size = 10;
+	context.max_iterations = 1000;
 	context.generator = point_generator(rand);
 	context.evaluator = f;
 	context.selector = roulette_wheel_selection(rand, [](double x) noexcept { return 1.0 / x; });
-	context.breeder = mutating_breeder(&average, point_mutator(2.0, rand));
+	context.breeder = mutating_breeder(&average, point_mutator(0.1, rand));
 	context.comparator = std::greater<>();
 	algorithm_type algorithm(context);
 #ifdef LOGGING
