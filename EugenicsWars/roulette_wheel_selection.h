@@ -27,6 +27,7 @@
 
 #include <algorithm>
 #include <cstddef>
+#include <limits>
 #include <random>
 #include <utility>
 #include <type_traits>
@@ -58,8 +59,12 @@ inline void roulette_wheel_selection<UniformRandomBitGenerator, Function>::opera
 	samples.reserve(specimens.size());
 	for (iterator_type it = specimens.begin(); it != specimens.end(); ++it) {
 		const sample_type probability = probability_function(it->rating());
-		const std::exponential_distribution<sample_type> distribution(probability);
-		samples.emplace_back(distribution(rand), it);
+		sample_type sample = std::numeric_limits<sample_type>::max();
+		if (probability > 0.0) {
+			const std::exponential_distribution<sample_type> distribution(probability);
+			sample = distribution(rand);
+		}
+		samples.emplace_back(sample, it);
 	}
 	std::nth_element(samples.begin(), samples.begin() + n, samples.end());
 	samples.resize(n);
