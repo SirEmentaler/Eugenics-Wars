@@ -25,6 +25,7 @@
 #ifndef EUGENICS_WARS_CHAIN_MUTATION_H
 #define EUGENICS_WARS_CHAIN_MUTATION_H
 
+#include <cstddef>
 #include <utility>
 #include <tuple>
 
