@@ -36,7 +36,7 @@ template<class UniformRandomBitGenerator>
 class path_node_swapper {
 public:
 	explicit path_node_swapper(const UniformRandomBitGenerator& g);
-	permutation operator()(const permutation& perm);
+	void operator()(permutation& perm);
 private:
 	UniformRandomBitGenerator rand;
 };
@@ -46,20 +46,18 @@ inline path_node_swapper<UniformRandomBitGenerator>::path_node_swapper(const Uni
 	: rand(g) {}
 
 template<class UniformRandomBitGenerator>
-inline permutation path_node_swapper<UniformRandomBitGenerator>::operator()(const permutation& perm) {
-	permutation result = perm;
+inline void path_node_swapper<UniformRandomBitGenerator>::operator()(permutation& perm) {
 	std::vector<std::reference_wrapper<permutation::value_type>> sample;
 	sample.reserve(2);
-	std::sample(result.begin(), result.end(), std::back_inserter(sample), 2, rand);
+	std::sample(perm.begin(), perm.end(), std::back_inserter(sample), 2, rand);
 	std::swap(sample.front().get(), sample.back().get());
-	return result;
 }
 
 template<class UniformRandomBitGenerator>
 class path_node_relocator {
 public:
 	explicit path_node_relocator(const UniformRandomBitGenerator& g);
-	permutation operator()(const permutation& perm);
+	void operator()(permutation& perm);
 private:
 	UniformRandomBitGenerator rand;
 };
@@ -69,16 +67,14 @@ inline path_node_relocator<UniformRandomBitGenerator>::path_node_relocator(const
 	: rand(g) {}
 
 template<class UniformRandomBitGenerator>
-inline permutation path_node_relocator<UniformRandomBitGenerator>::operator()(const permutation& perm) {
-	permutation result = perm;
+inline void path_node_relocator<UniformRandomBitGenerator>::operator()(permutation& perm) {
 	std::uniform_int_distribution<std::size_t> distribution(0, perm.size());
-	auto left = result.begin() + distribution(rand);
-	auto right = result.begin() + distribution(rand);
+	auto left = perm.begin() + distribution(rand);
+	auto right = perm.begin() + distribution(rand);
 	if (left < right)
 		std::rotate(left, std::next(left), right);
 	else if (left > right)
 		std::rotate(right, std::prev(left), left);
-	return result;
 }
 
 #endif

@@ -32,7 +32,7 @@ class mutate_with_probability {
 public:
 	mutate_with_probability(const UniformRandomBitGenerator& g, double probability, const Mutator& mutator);
 	template<class Specimen>
-	Specimen operator()(const Specimen& specimen);
+	void operator()(Specimen& specimen);
 private:
 	UniformRandomBitGenerator rand;
 	std::bernoulli_distribution distribution;
@@ -45,8 +45,9 @@ inline mutate_with_probability<UniformRandomBitGenerator, Mutator>::mutate_with_
 
 template<class UniformRandomBitGenerator, class Mutator>
 template<class Specimen>
-inline Specimen mutate_with_probability<UniformRandomBitGenerator, Mutator>::operator()(const Specimen& specimen) {
-	return distribution(rand) ? mutator(specimen) : specimen;
+inline void mutate_with_probability<UniformRandomBitGenerator, Mutator>::operator()(Specimen& specimen) {
+	if (distribution(rand))
+		mutator(specimen);
 }
 
 #endif

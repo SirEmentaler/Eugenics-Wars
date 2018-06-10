@@ -33,11 +33,11 @@ class chain_mutation {
 public:
 	explicit chain_mutation(Mutations&&... mutations);
 	template<class T>
-	T operator()(const T& specimen);
+	void operator()(T& specimen);
 private:
 	using tuple_type = std::tuple<Mutations...>;
 	template<std::size_t I, class T>
-	T chain_call(const T& specimen);
+	void chain_call(T& specimen);
 	tuple_type mutations;
 };
 
@@ -47,17 +47,17 @@ inline chain_mutation<Mutations...>::chain_mutation(Mutations&&... mutations)
 
 template<class... Mutations>
 template<class T>
-inline T chain_mutation<Mutations...>::operator()(const T& specimen) {
+inline void chain_mutation<Mutations...>::operator()(T& specimen) {
 	return chain_call<0>(specimen);
 }
 
 template<class... Mutations>
 template<std::size_t I, class T>
-inline T chain_mutation<Mutations...>::chain_call(const T& specimen) {
-	if constexpr (I == std::tuple_size_v<tuple_type>)
-		return specimen;
-	else
-		return chain_call<I + 1>(std::get<I>(mutations)(specimen));
+inline void chain_mutation<Mutations...>::chain_call(T& specimen) {
+	if constexpr (I < std::tuple_size_v<tuple_type>) {
+		std::get<I>(mutations)(specimen);
+		chain_call<I + 1>(specimen);
+	}
 }
 
 #endif

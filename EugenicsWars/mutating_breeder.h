@@ -43,7 +43,9 @@ inline mutating_breeder<Breeder, Mutator>::mutating_breeder(const Breeder& breed
 template<class Breeder, class Mutator>
 template<class Specimen>
 inline Specimen mutating_breeder<Breeder, Mutator>::operator()(const Specimen& lhs, const Specimen& rhs) {
-	return mutator(underlying_breeder(lhs, rhs));
+	Specimen result = underlying_breeder(lhs, rhs);
+	mutator(result);
+	return result;
 }
 
 #endif
