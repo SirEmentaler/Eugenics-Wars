@@ -31,16 +31,16 @@
 template<class UniformRandomBitGenerator>
 class point_generator {
 public:
-	explicit point_generator(const UniformRandomBitGenerator& g);
+	explicit point_generator(UniformRandomBitGenerator& g);
 	point operator()();
 private:
-	UniformRandomBitGenerator rand;
+	UniformRandomBitGenerator& rand;
 	std::uniform_real_distribution<> range_x {0.0, 1.5};
 	std::uniform_real_distribution<> range_y {7.5, 15.0};
 };
 
 template<class UniformRandomBitGenerator>
-inline point_generator<UniformRandomBitGenerator>::point_generator(const UniformRandomBitGenerator& g)
+inline point_generator<UniformRandomBitGenerator>::point_generator(UniformRandomBitGenerator& g)
 	: rand(g) {}
 
 template<class UniformRandomBitGenerator>

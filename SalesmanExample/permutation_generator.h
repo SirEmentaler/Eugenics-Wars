@@ -35,15 +35,15 @@
 template<class UniformRandomBitGenerator>
 class permutation_generator {
 public:
-	permutation_generator(std::size_t n, const UniformRandomBitGenerator& g);
+	permutation_generator(std::size_t n, UniformRandomBitGenerator& g);
 	permutation operator()();
 private:
 	std::size_t size;
-	UniformRandomBitGenerator rand;
+	UniformRandomBitGenerator& rand;
 };
 
 template<class UniformRandomBitGenerator>
-inline permutation_generator<UniformRandomBitGenerator>::permutation_generator(std::size_t n, const UniformRandomBitGenerator& g)
+inline permutation_generator<UniformRandomBitGenerator>::permutation_generator(std::size_t n, UniformRandomBitGenerator& g)
 	: size(n), rand(g) {}
 
 template<class UniformRandomBitGenerator>

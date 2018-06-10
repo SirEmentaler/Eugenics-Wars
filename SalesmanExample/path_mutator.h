@@ -35,14 +35,14 @@
 template<class UniformRandomBitGenerator>
 class path_node_swapper {
 public:
-	explicit path_node_swapper(const UniformRandomBitGenerator& g);
+	explicit path_node_swapper(UniformRandomBitGenerator& g);
 	void operator()(permutation& perm);
 private:
-	UniformRandomBitGenerator rand;
+	UniformRandomBitGenerator& rand;
 };
 
 template<class UniformRandomBitGenerator>
-inline path_node_swapper<UniformRandomBitGenerator>::path_node_swapper(const UniformRandomBitGenerator& g)
+inline path_node_swapper<UniformRandomBitGenerator>::path_node_swapper(UniformRandomBitGenerator& g)
 	: rand(g) {}
 
 template<class UniformRandomBitGenerator>
@@ -56,18 +56,18 @@ inline void path_node_swapper<UniformRandomBitGenerator>::operator()(permutation
 template<class UniformRandomBitGenerator>
 class path_node_relocator {
 public:
-	explicit path_node_relocator(const UniformRandomBitGenerator& g);
-	void operator()(permutation& perm);
+	explicit path_node_relocator(UniformRandomBitGenerator& g);
+	void operator()(permutation& perm) const;
 private:
-	UniformRandomBitGenerator rand;
+	UniformRandomBitGenerator& rand;
 };
 
 template<class UniformRandomBitGenerator>
-inline path_node_relocator<UniformRandomBitGenerator>::path_node_relocator(const UniformRandomBitGenerator& g)
+inline path_node_relocator<UniformRandomBitGenerator>::path_node_relocator(UniformRandomBitGenerator& g)
 	: rand(g) {}
 
 template<class UniformRandomBitGenerator>
-inline void path_node_relocator<UniformRandomBitGenerator>::operator()(permutation& perm) {
+inline void path_node_relocator<UniformRandomBitGenerator>::operator()(permutation& perm) const {
 	std::uniform_int_distribution<std::size_t> distribution(0, perm.size());
 	auto left = perm.begin() + distribution(rand);
 	auto right = perm.begin() + distribution(rand);

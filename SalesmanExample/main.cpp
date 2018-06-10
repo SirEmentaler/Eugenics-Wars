@@ -47,7 +47,7 @@ int main() {
 			in >> cell;
 		}
 	}
-	const std::mt19937_64 rand(std::chrono::high_resolution_clock::now().time_since_epoch().count());
+	std::mt19937_64 rand(std::chrono::high_resolution_clock::now().time_since_epoch().count());
 	using algorithm_type = genetic_algorithm<permutation, long long>;
 	algorithm_type::context_type context;
 	context.initial_population_size = 1000;

@@ -39,18 +39,18 @@
 template<class UniformRandomBitGenerator>
 class path_merger {
 public:
-	explicit path_merger(const UniformRandomBitGenerator& g);
+	explicit path_merger(UniformRandomBitGenerator& g);
 	permutation operator()(const permutation& lhs, const permutation& rhs);
 private:
 	using edge_type = std::pair<unsigned, unsigned>;
 	using edge_vector = std::vector<edge_type>;
 	edge_vector to_edges(const permutation& perm) const;
 	permutation to_permutation(const edge_vector& edges) const;
-	UniformRandomBitGenerator rand;
+	UniformRandomBitGenerator& rand;
 };
 
 template<class UniformRandomBitGenerator>
-path_merger<UniformRandomBitGenerator>::path_merger(const UniformRandomBitGenerator& g)
+path_merger<UniformRandomBitGenerator>::path_merger(UniformRandomBitGenerator& g)
 	: rand(g) {}
 
 template<class UniformRandomBitGenerator>
