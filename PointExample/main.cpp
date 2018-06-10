@@ -46,7 +46,7 @@ int main() {
 	const std::mt19937_64 rand(std::chrono::high_resolution_clock::now().time_since_epoch().count());
 	using algorithm_type = genetic_algorithm<point, double>;
 	algorithm_type::context_type context;
-	context.initial_population_size = 10000;
+	context.initial_population_size = 100;
 	context.breeding_population_size = 10;
 	context.max_iterations = 1000;
 	context.generator = point_generator(rand);
