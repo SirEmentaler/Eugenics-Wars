@@ -32,6 +32,7 @@
 #include <genetics.h>
 #include "path_evaluator.h"
 #include "path_merger.h"
+#include "path_mutator.h"
 #include "permutation.h"
 #include "permutation_generator.h"
 
@@ -57,7 +58,12 @@ int main() {
 	context.selector = elitist_selection<std::greater<>>();
 	// Also try:
 	// context.selector = roulette_wheel_selection(rand, [](long long x) { return std::exp(-x / 200.0); });
-	context.breeder = path_merger(rand);
+	context.breeder = mutating_breeder(path_merger(rand),
+		chain_mutation {
+			mutate_with_probability(rand, 0.2, path_node_swapper(rand)),
+			mutate_with_probability(rand, 0.1, path_node_relocator(rand)),
+		}
+	);
 	context.comparator = std::greater<>();
 	std::ifstream in_pos("positions.txt");
 	std::vector<std::pair<double, double>> positions(n);

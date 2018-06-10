@@ -34,6 +34,7 @@
     <ClInclude Include="disjoint_set_data_structure.h" />
     <ClInclude Include="path_evaluator.h" />
     <ClInclude Include="path_merger.h" />
+    <ClInclude Include="path_mutator.h" />
     <ClInclude Include="permutation.h" />
     <ClInclude Include="permutation_generator.h" />
   </ItemGroup>
