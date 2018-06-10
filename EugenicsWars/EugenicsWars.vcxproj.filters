@@ -45,5 +45,8 @@
     <ClInclude Include="default_logger.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="chain_mutation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

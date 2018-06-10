@@ -173,6 +173,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="chain_mutation.h" />
     <ClInclude Include="default_logger.h" />
     <ClInclude Include="elitist_selection.h" />
     <ClInclude Include="evaluated_specimen.h" />

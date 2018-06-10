@@ -22,18 +22,42 @@
 //
 ////////////////////////////////////////////////////////////
 
-#ifndef EUGENICS_WARS_GENETICS_H
-#define EUGENICS_WARS_GENETICS_H
+#ifndef EUGENICS_WARS_CHAIN_MUTATION_H
+#define EUGENICS_WARS_CHAIN_MUTATION_H
 
-#include "chain_mutation.h"
-#include "default_logger.h"
-#include "elitist_selection.h"
-#include "evaluated_specimen.h"
-#include "genetic_algorithm.h"
-#include "identity.h"
-#include "mutate_with_probability.h"
-#include "mutating_breeder.h"
-#include "repeat.h"
-#include "roulette_wheel_selection.h"
+#include <utility>
+#include <tuple>
+
+template<class... Mutations>
+class chain_mutation {
+public:
+	explicit chain_mutation(Mutations&&... mutations);
+	template<class T>
+	T operator()(const T& specimen);
+private:
+	using tuple_type = std::tuple<Mutations...>;
+	template<std::size_t I, class T>
+	T chain_call(const T& specimen);
+	tuple_type mutations;
+};
+
+template<class... Mutations>
+inline chain_mutation<Mutations...>::chain_mutation(Mutations&&... mutations)
+	: mutations(std::forward<Mutations>(mutations)...) {}
+
+template<class... Mutations>
+template<class T>
+inline T chain_mutation<Mutations...>::operator()(const T& specimen) {
+	return chain_call<0>(specimen);
+}
+
+template<class... Mutations>
+template<std::size_t I, class T>
+inline T chain_mutation<Mutations...>::chain_call(const T& specimen) {
+	if constexpr (I == std::tuple_size_v<tuple_type>)
+		return specimen;
+	else
+		return chain_call<I + 1>(std::get<I>(mutations)(specimen));
+}
 
 #endif
