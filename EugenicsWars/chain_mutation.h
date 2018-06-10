@@ -35,10 +35,10 @@ public:
 	template<class T>
 	void operator()(T& specimen);
 private:
-	using tuple_type = std::tuple<Mutations...>;
-	template<std::size_t I, class T>
-	void chain_call(T& specimen);
-	tuple_type mutations;
+	using index_sequence = std::make_index_sequence<sizeof...(Mutations)>;
+	template<class T, std::size_t... Ints>
+	void chain_call(T& specimen, std::index_sequence<Ints...>);
+	std::tuple<Mutations...> mutations;
 };
 
 template<class... Mutations>
@@ -48,16 +48,13 @@ inline chain_mutation<Mutations...>::chain_mutation(Mutations&&... mutations)
 template<class... Mutations>
 template<class T>
 inline void chain_mutation<Mutations...>::operator()(T& specimen) {
-	return chain_call<0>(specimen);
+	return chain_call(specimen, index_sequence());
 }
 
 template<class... Mutations>
-template<std::size_t I, class T>
-inline void chain_mutation<Mutations...>::chain_call(T& specimen) {
-	if constexpr (I < std::tuple_size_v<tuple_type>) {
-		std::get<I>(mutations)(specimen);
-		chain_call<I + 1>(specimen);
-	}
+template<class T, std::size_t... Ints>
+inline void chain_mutation<Mutations...>::chain_call(T& specimen, std::index_sequence<Ints...>) {
+	((void)std::get<Ints>(mutations)(specimen), ...);
 }
 
 #endif
