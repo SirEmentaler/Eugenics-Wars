@@ -51,7 +51,7 @@ int main() {
 	context.max_iterations = 1000;
 	context.generator = point_generator(rand);
 	context.evaluator = f;
-	context.selector = roulette_wheel_selection(rand, [](double x) noexcept { return 1.0 / x; });
+	context.selector = roulette_wheel_selection(rand, [](double x) noexcept { return 1.0 / (x * x); });
 	context.breeder = mutating_breeder(&average, point_mutator(0.1, rand));
 	context.comparator = std::greater<>();
 	algorithm_type algorithm(context);
