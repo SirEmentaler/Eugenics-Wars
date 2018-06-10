@@ -48,8 +48,8 @@ int main() {
 	const std::mt19937_64 rand(std::chrono::high_resolution_clock::now().time_since_epoch().count());
 	using algorithm_type = genetic_algorithm<permutation, long long>;
 	algorithm_type::context_type context;
-	context.initial_population_size = 200;
-	context.breeding_population_size = 15;
+	context.initial_population_size = 1000;
+	context.breeding_population_size = 100;
 	context.max_iterations = 100;
 	context.generator = permutation_generator(n, rand);
 	context.evaluator = path_evaluator(matrix);

@@ -26,15 +26,17 @@
 #define SALESMAN_EXAMPLE_PATH_MERGER_H
 
 #include <utility>
-#include <set>
+#include <vector>
 #include "permutation.h"
 
 class path_merger {
 public:
 	permutation operator()(const permutation& lhs, const permutation& rhs) const;
 private:
-	using edge_set = std::set<std::pair<unsigned, unsigned>>;
-	edge_set to_edges(const permutation& perm) const;
+	using edge_type = std::pair<unsigned, unsigned>;
+	using edge_vector = std::vector<edge_type>;
+	edge_vector to_edges(const permutation& perm) const;
+	permutation to_permutation(const edge_vector& edges) const;
 };
 
 #endif
