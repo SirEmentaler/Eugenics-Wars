@@ -31,7 +31,7 @@
 template<class UniformRandomBitGenerator>
 class point_generator {
 public:
-	point_generator(const UniformRandomBitGenerator& g);
+	explicit point_generator(const UniformRandomBitGenerator& g);
 	point operator()();
 private:
 	UniformRandomBitGenerator rand;
