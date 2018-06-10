@@ -31,7 +31,7 @@
 template<class UniformRandomBitGenerator>
 class point_mutator {
 public:
-	explicit point_mutator(const UniformRandomBitGenerator& g);
+	explicit point_mutator(double sigma, const UniformRandomBitGenerator& g);
 	point operator()(const point& p);
 private:
 	std::normal_distribution<> distribution;
@@ -39,8 +39,8 @@ private:
 };
 
 template<class UniformRandomBitGenerator>
-inline point_mutator<UniformRandomBitGenerator>::point_mutator(const UniformRandomBitGenerator& g)
-	: rand(g) {}
+inline point_mutator<UniformRandomBitGenerator>::point_mutator(double sigma, const UniformRandomBitGenerator& g)
+	: distribution(0.0, sigma), rand(g) {}
 
 template<class UniformRandomBitGenerator>
 inline point point_mutator<UniformRandomBitGenerator>::operator()(const point& p) {

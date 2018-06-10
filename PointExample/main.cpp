@@ -52,7 +52,7 @@ int main() {
 	context.generator = point_generator(rand);
 	context.evaluator = f;
 	context.selector = roulette_wheel_selection(rand, [](double x) noexcept { return 1.0 / x; });
-	context.breeder = mutating_breeder(&average, point_mutator(rand));
+	context.breeder = mutating_breeder(&average, point_mutator(2.0, rand));
 	context.comparator = std::greater<>();
 	algorithm_type algorithm(context);
 #ifdef LOGGING
