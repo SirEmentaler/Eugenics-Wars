@@ -65,8 +65,7 @@ int main() {
 			logger
 #endif
 		);
-		std::cout << "Minimum found has value " << result.rating() << " at point ";
-		std::cout << result.value().x << ", " << result.value().y << std::endl;
+		std::cout << "Minimum found: f" << result.value() << " = " << result.rating() << std::endl;
 	});
 	return 0;
 }
