@@ -83,7 +83,7 @@ int main() {
 			const auto& [x, y] = positions[index];
 			out_pos << x << ' ' << y << '\n';
 		}
-		const auto&[x, y] = positions[result.value().front()];
+		const auto& [x, y] = positions[result.value().front()];
 		out_pos << x << ' ' << y << '\n';
 	}
 	return 0;
