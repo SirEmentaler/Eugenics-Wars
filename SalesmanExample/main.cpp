@@ -22,6 +22,7 @@
 //
 ////////////////////////////////////////////////////////////
 
+#include <charconv>
 #include <chrono>
 #include <cstddef>
 #include <fstream>
@@ -56,18 +57,32 @@ int main() {
 	context.selector = elitist_selection<std::greater<>>();
 	context.breeder = path_merger(rand);
 	context.comparator = std::greater<>();
+	std::ifstream in_pos("positions.txt");
+	std::vector<std::pair<double, double>> positions(n);
+	for (auto&& [x, y] : positions) {
+		in_pos >> x >> y;
+	}
 	algorithm_type algorithm(context);
 #ifdef LOGGING
 	std::ofstream out_log("salesman.log");
 	default_logger logger(out_log);
 #endif
-	repeat(10, [&] {
+	for (int i = 0; i < 10; i++) {
 		const auto result = algorithm(
 #ifdef LOGGING
 			logger
 #endif
 		);
 		std::cout << "Best path found has length " << result.rating() << ":\n" << result.value() << std::endl;
-	});
+		char filename[] = "cities_0.log";
+		std::to_chars(&filename[7], &filename[8], i);
+		std::ofstream out_pos(filename);
+		for (const auto& index : result.value()) {
+			const auto& [x, y] = positions[index];
+			out_pos << x << ' ' << y << '\n';
+		}
+		const auto&[x, y] = positions[result.value().front()];
+		out_pos << x << ' ' << y << '\n';
+	}
 	return 0;
 }
