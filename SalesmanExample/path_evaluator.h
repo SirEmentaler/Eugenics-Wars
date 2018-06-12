@@ -27,6 +27,7 @@
 
 #include <functional>
 #include <numeric>
+#include <gsl/gsl_assert>
 #include "permutation.h"
 
 template<class Matrix>
@@ -47,6 +48,8 @@ inline path_evaluator<Matrix>::path_evaluator(const matrix_type& matrix)
 
 template<class Matrix>
 inline auto path_evaluator<Matrix>::operator()(const permutation& perm) const -> value_type {
+	Expects(perm.size() == matrix.size());
+	Expects(perm.size() > 0);
 	const auto distance = [this](unsigned dest, unsigned src) {
 		return matrix[src][dest];
 	};

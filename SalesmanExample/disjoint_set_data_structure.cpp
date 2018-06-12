@@ -1,6 +1,7 @@
 #include "disjoint_set_data_structure.h"
 #include <cstddef>
 #include <numeric>
+#include <gsl/gsl_assert>
 
 disjoint_set_data_structure::disjoint_set_data_structure(std::size_t n)
 	: parents(n), ranks(n) {
@@ -8,6 +9,7 @@ disjoint_set_data_structure::disjoint_set_data_structure(std::size_t n)
 }
 
 std::size_t disjoint_set_data_structure::find(std::size_t index) const {
+	Expects(index < parents.size());
 	std::size_t& parent = parents[index];
 	if (parent != index)
 		parent = find(parent);
@@ -15,6 +17,8 @@ std::size_t disjoint_set_data_structure::find(std::size_t index) const {
 }
 
 bool disjoint_set_data_structure::merge(std::size_t lhs, std::size_t rhs) {
+	Expects(lhs < parents.size());
+	Expects(rhs < parents.size());
 	const std::size_t lhs_root = find(lhs);
 	const std::size_t rhs_root = find(rhs);
 	if (lhs_root == rhs_root)

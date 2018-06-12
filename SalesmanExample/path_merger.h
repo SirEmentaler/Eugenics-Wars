@@ -55,6 +55,8 @@ path_merger<UniformRandomBitGenerator>::path_merger(UniformRandomBitGenerator& g
 
 template<class UniformRandomBitGenerator>
 permutation path_merger<UniformRandomBitGenerator>::operator()(const permutation& lhs, const permutation& rhs) {
+	Expects(lhs.size() == rhs.size());
+	Expects(lhs.size() > 0);
 	const std::size_t size = lhs.size();
 	edge_vector lhs_edges = to_edges(lhs);
 	edge_vector rhs_edges = to_edges(rhs);
@@ -109,21 +111,26 @@ permutation path_merger<UniformRandomBitGenerator>::operator()(const permutation
 		const unsigned& right = s.top();
 		result_edges.emplace_back(left, right);
 	}
+	Ensures(result_edges.size() == lhs.size());
 	return to_permutation(result_edges);
 }
 
 template<class UniformRandomBitGenerator>
 auto path_merger<UniformRandomBitGenerator>::to_edges(const permutation& perm) const -> edge_vector {
+	Expects(perm.size() > 0);
 	edge_vector result {std::minmax({perm.front(), perm.back()})};
+	result.reserve(perm.size());
 	std::transform(std::next(perm.begin()), perm.end(), perm.begin(), std::inserter(result, result.end()), [](unsigned lhs, unsigned rhs) {
 		return std::minmax({lhs, rhs});
 	});
 	std::sort(result.begin(), result.end());
+	Ensures(result.size() == perm.size());
 	return result;
 }
 
 template<class UniformRandomBitGenerator>
 permutation path_merger<UniformRandomBitGenerator>::to_permutation(const edge_vector& edges) const {
+	Expects(edges.size() > 0);
 	const std::size_t size = edges.size();
 	std::vector<std::vector<unsigned>> graph(size);
 	for (auto&& node : graph) {
@@ -143,6 +150,7 @@ permutation path_merger<UniformRandomBitGenerator>::to_permutation(const edge_ve
 		prev = cur;
 		cur = next;
 	});
+	Ensures(result.size() == edges.size());
 	return result;
 }
 

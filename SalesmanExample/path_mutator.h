@@ -47,6 +47,7 @@ inline path_node_swapper<UniformRandomBitGenerator>::path_node_swapper(UniformRa
 
 template<class UniformRandomBitGenerator>
 inline void path_node_swapper<UniformRandomBitGenerator>::operator()(permutation& perm) {
+	Expects(perm.size() > 0);
 	std::vector<std::reference_wrapper<permutation::value_type>> sample;
 	sample.reserve(2);
 	std::sample(perm.begin(), perm.end(), std::back_inserter(sample), 2, rand);
@@ -68,6 +69,7 @@ inline path_node_relocator<UniformRandomBitGenerator>::path_node_relocator(Unifo
 
 template<class UniformRandomBitGenerator>
 inline void path_node_relocator<UniformRandomBitGenerator>::operator()(permutation& perm) const {
+	Expects(perm.size() > 0);
 	std::uniform_int_distribution<std::size_t> distribution(0, perm.size());
 	auto left = perm.begin() + distribution(rand);
 	auto right = perm.begin() + distribution(rand);
