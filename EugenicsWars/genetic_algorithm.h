@@ -115,7 +115,6 @@ inline void genetic_algorithm<Specimen, Rating>::evaluate(std::vector<evaluated_
 	for (auto&& specimen : specimens) {
 		specimen.evaluate(context.evaluator);
 	}
-	Ensures(std::all_of(specimens.begin(), specimens.end(), std::mem_fn(&evaluated_specimen_type::has_rating)));
 }
 
 template<class Specimen, class Rating>

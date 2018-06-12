@@ -29,6 +29,7 @@
 #include <utility>
 #include <tuple>
 #include <type_traits>
+#include <gsl/gsl_assert>
 
 template<class Specimen, class Rating>
 class evaluated_specimen {
@@ -77,6 +78,7 @@ template<class Specimen, class Rating>
 template<class Function>
 inline void evaluated_specimen<Specimen, Rating>::evaluate(Function&& evaluator) {
 	grade.emplace(evaluator(std::as_const(specimen)));
+	Ensures(has_rating());
 }
 
 #endif
