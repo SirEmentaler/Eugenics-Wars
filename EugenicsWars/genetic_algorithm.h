@@ -30,6 +30,7 @@
 #include <iterator>
 #include <utility>
 #include <vector>
+#include <gsl/gsl_assert>
 #include "evaluated_specimen.h"
 #include "repeat.h"
 
@@ -76,6 +77,13 @@ inline genetic_algorithm<Specimen, Rating>::genetic_algorithm(context_type&& con
 template<class Specimen, class Rating>
 template<class... Functions>
 inline auto genetic_algorithm<Specimen, Rating>::operator()(Functions&&... observers) const -> evaluated_specimen_type {
+	Expects(context.initial_population_size > 0);
+	Expects(context.breeding_population_size > 0);
+	Expects(context.generator != nullptr);
+	Expects(context.evaluator != nullptr);
+	Expects(context.selector != nullptr);
+	Expects(context.breeder != nullptr);
+	Expects(context.comparator != nullptr);
 	std::vector<evaluated_specimen_type> specimens(context.initial_population_size);
 	for (auto&& specimen : specimens) {
 		specimen.value() = context.generator();
@@ -107,19 +115,22 @@ inline void genetic_algorithm<Specimen, Rating>::evaluate(std::vector<evaluated_
 	for (auto&& specimen : specimens) {
 		specimen.evaluate(context.evaluator);
 	}
+	Ensures(std::all_of(specimens.begin(), specimens.end(), std::mem_fn(&evaluated_specimen_type::has_rating)));
 }
 
 template<class Specimen, class Rating>
 inline auto genetic_algorithm<Specimen, Rating>::breed(const std::vector<evaluated_specimen_type>& specimens) const -> std::vector<evaluated_specimen_type> {
 	const std::size_t specimen_count = specimens.size();
 	std::vector<evaluated_specimen_type> result;
-	result.reserve(specimen_count * (specimen_count - 1) / 2);
+	const std::size_t reserve = specimen_count * (specimen_count - 1) / 2;
+	result.reserve(reserve);
 	for (auto it = specimens.begin(); it != specimens.end(); ++it) {
 		const specimen_type& father = it->value();
 		std::for_each(std::next(it), specimens.end(), [&](const evaluated_specimen_type& mother) {
 			result.emplace_back(evaluated_specimen_type {context.breeder(father, mother.value())});
 		});
 	}
+	Ensures(result.size() == reserve);
 	return result;
 }
 

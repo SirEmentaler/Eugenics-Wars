@@ -32,6 +32,7 @@
 #include <utility>
 #include <type_traits>
 #include <vector>
+#include <gsl/gsl_assert>
 #include "identity.h"
 
 template<class UniformRandomBitGenerator, class Function = identity>
@@ -52,6 +53,7 @@ inline roulette_wheel_selection<UniformRandomBitGenerator, Function>::roulette_w
 template<class UniformRandomBitGenerator, class Function>
 template<class Specimen>
 inline void roulette_wheel_selection<UniformRandomBitGenerator, Function>::operator()(std::vector<Specimen>& specimens, std::size_t n) {
+	Expects(specimens.size() >= n);
 	using sample_type = std::common_type_t<double, decltype(probability_function(std::declval<typename Specimen::rating_type>()))>;
 	using iterator_type = typename std::vector<Specimen>::iterator;
 	using pair_type = std::pair<sample_type, iterator_type>;

@@ -29,6 +29,7 @@
 #include <cstddef>
 #include <functional>
 #include <vector>
+#include <gsl/gsl_assert>
 
 template<class Compare = std::less<>>
 class elitist_selection {
@@ -47,6 +48,7 @@ inline elitist_selection<Compare>::elitist_selection(const Compare& comp)
 template<class Compare>
 template<class Specimen>
 inline void elitist_selection<Compare>::operator()(std::vector<Specimen>& specimens, std::size_t n) const {
+	Expects(specimens.size() >= n);
 	std::nth_element(specimens.begin(), specimens.begin() + n, specimens.end(), [this](const Specimen& lhs, const Specimen& rhs) {
 		return comparator(rhs.rating(), lhs.rating());
 	});
