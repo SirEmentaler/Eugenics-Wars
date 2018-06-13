@@ -31,6 +31,7 @@
 #include <random>
 #include <genetics.h>
 #include "point.h"
+#include "point_breeder.h"
 #include "point_generator.h"
 #include "point_mutator.h"
 
@@ -54,7 +55,7 @@ int main() {
 	context.selector = roulette_wheel_selection(rand, [](double x) noexcept { return 1.0 / (x * x); });
 	// Also try:
 	// context.selector = elitist_selection<std::greater<>>();
-	context.breeder = mutating_breeder(&average, point_mutator(0.1, rand));
+	context.breeder = mutating_breeder(point_merge_coordinates(rand), point_mutator(0.1, rand));
 	context.comparator = std::greater<>();
 	algorithm_type algorithm(context);
 #ifdef LOGGING

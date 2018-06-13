@@ -22,19 +22,38 @@
 //
 ////////////////////////////////////////////////////////////
 
-#ifndef POINT_EXAMPLE_POINT_H
-#define POINT_EXAMPLE_POINT_H
+#ifndef POINT_EXAMPLE_POINT_BREEDER_H
+#define POINT_EXAMPLE_POINT_BREEDER_H
 
-#include <ostream>
+#include <random>
+#include "point.h"
 
-struct point {
-	double x;
-	double y;
+class point_average {
+public:
+	constexpr point operator()(const point& lhs, const point& rhs) const noexcept;
 };
 
-template<class CharT, class Traits>
-std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT, Traits>& os, const point& p) {
-	return os << '(' << p.x << ',' << p.y << ')';
+constexpr point point_average::operator()(const point & lhs, const point & rhs) const noexcept {
+	return {(lhs.x + rhs.x) / 2.0, (lhs.y + rhs.y) / 2.0};
+}
+
+template<class UniformRandomBitGenerator>
+class point_merge_coordinates {
+public:
+	explicit point_merge_coordinates(UniformRandomBitGenerator& g);
+	point operator()(const point& lhs, const point& rhs);
+private:
+	UniformRandomBitGenerator& rand;
+	std::bernoulli_distribution distribution {0.5};
+};
+
+template<class UniformRandomBitGenerator>
+inline point_merge_coordinates<UniformRandomBitGenerator>::point_merge_coordinates(UniformRandomBitGenerator& g)
+	: rand(g) {}
+
+template<class UniformRandomBitGenerator>
+inline point point_merge_coordinates<UniformRandomBitGenerator>::operator()(const point& lhs, const point& rhs) {
+	return distribution(rand) ? point {lhs.x, rhs.y} : point {rhs.x, lhs.y};
 }
 
 #endif

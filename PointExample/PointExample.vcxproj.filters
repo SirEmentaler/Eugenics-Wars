@@ -29,5 +29,8 @@
     <ClInclude Include="point_mutator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="point_breeder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
