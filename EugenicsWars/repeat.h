@@ -36,12 +36,15 @@ constexpr void repeat(std::size_t n, Function f) noexcept(noexcept(f())) {
 
 template<class Function>
 constexpr void repeat_while(std::size_t n, Function f) noexcept(noexcept(f())) {
-	while (n-- && f());
+	while (n-- && static_cast<bool>(f()));
 }
 
 template<class Function>
 constexpr void repeat_until(std::size_t n, Function f) noexcept(noexcept(f())) {
-	while (n-- && !f());
+	while (n--) {
+		if (f())
+			return;
+	}
 }
 
 #endif
