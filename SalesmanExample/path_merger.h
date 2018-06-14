@@ -31,6 +31,7 @@
 #include <stack>
 #include <utility>
 #include <vector>
+#include <gsl/gsl_util>
 #include <gsl/span>
 #include <repeat.h>
 #include "disjoint_set_data_structure.h"
@@ -39,7 +40,7 @@
 template<class UniformRandomBitGenerator>
 class path_merger {
 public:
-	explicit path_merger(UniformRandomBitGenerator& g);
+	explicit path_merger(UniformRandomBitGenerator& g) noexcept;
 	permutation operator()(const permutation& lhs, const permutation& rhs);
 private:
 	using edge_type = std::pair<unsigned, unsigned>;
@@ -50,7 +51,7 @@ private:
 };
 
 template<class UniformRandomBitGenerator>
-path_merger<UniformRandomBitGenerator>::path_merger(UniformRandomBitGenerator& g)
+path_merger<UniformRandomBitGenerator>::path_merger(UniformRandomBitGenerator& g) noexcept
 	: rand(g) {}
 
 template<class UniformRandomBitGenerator>
@@ -67,8 +68,8 @@ permutation path_merger<UniformRandomBitGenerator>::operator()(const permutation
 	std::vector<unsigned> missing_edges(size, 2);
 	for (const auto& [left, right] : result_edges) {
 		components.merge(left, right);
-		missing_edges[left]--;
-		missing_edges[right]--;
+		gsl::at(missing_edges, left)--;
+		gsl::at(missing_edges, right)--;
 	}
 	std::shuffle(lhs_edges.begin(), lhs_edges.end(), rand);
 	std::shuffle(rhs_edges.begin(), rhs_edges.end(), rand);
@@ -77,28 +78,28 @@ permutation path_merger<UniformRandomBitGenerator>::operator()(const permutation
 		for (auto&& span : spans) {
 			auto it = std::find_if(span.begin(), span.end(), [&](const edge_type& edge) {
 				const auto& [lhs, rhs] = edge;
-				return missing_edges[lhs] && missing_edges[rhs] && components.find(lhs) != components.find(rhs);
+				return gsl::at(missing_edges, lhs) && gsl::at(missing_edges, rhs) && components.find(lhs) != components.find(rhs);
 			});
 			if (it != span.end()) {
 				const auto& [left, right] = *it;
 				result_edges.emplace_back(left, right);
 				components.merge(left, right);
-				missing_edges[left]--;
-				missing_edges[right]--;
+				gsl::at(missing_edges, left)--;
+				gsl::at(missing_edges, right)--;
 			}
 			span = span.subspan(it - span.begin());
 		}
 	}
 	std::stack<unsigned, std::vector<unsigned>> s;
 	for (unsigned i = 0; i < size; i++) {
-		repeat(missing_edges[i], [&] {
+		repeat(gsl::at(missing_edges, i), [&] {
 			if (!s.empty() && components.find(s.top()) != components.find(i)) {
 				const unsigned& left = s.top();
 				const unsigned& right = i;
 				result_edges.emplace_back(left, right);
 				components.merge(left, right);
-				missing_edges[left]--;
-				missing_edges[right]--;
+				gsl::at(missing_edges, left)--;
+				gsl::at(missing_edges, right)--;
 				s.pop();
 			} else {
 				s.push(i);
@@ -137,15 +138,15 @@ permutation path_merger<UniformRandomBitGenerator>::to_permutation(const edge_ve
 		node.reserve(2);
 	}
 	for (const auto& [lhs, rhs] : edges) {
-		graph[lhs].push_back(rhs);
-		graph[rhs].push_back(lhs);
+		gsl::at(graph, lhs).push_back(rhs);
+		gsl::at(graph, rhs).push_back(lhs);
 	}
 	permutation result(size);
 	unsigned prev = 0;
 	unsigned cur = graph.front().front();
 	std::for_each(std::next(result.begin()), result.end(), [&](unsigned& element) {
 		element = cur;
-		const auto& node = graph[cur];
+		const auto& node = gsl::at(graph, cur);
 		unsigned next = node.front() == prev ? node.back() : node.front();
 		prev = cur;
 		cur = next;

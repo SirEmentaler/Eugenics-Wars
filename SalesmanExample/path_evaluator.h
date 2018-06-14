@@ -51,7 +51,7 @@ inline auto path_evaluator<Matrix>::operator()(const permutation& perm) const ->
 	Expects(perm.size() == matrix.size());
 	Expects(perm.size() > 0);
 	const auto distance = [this](unsigned dest, unsigned src) {
-		return matrix[src][dest];
+		return gsl::at(gsl::at(matrix, src), dest);
 	};
 	return std::inner_product(std::next(perm.begin()), perm.end(), perm.begin(), distance(perm.front(), perm.back()), std::plus<>(), distance);
 }

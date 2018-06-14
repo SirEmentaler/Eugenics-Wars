@@ -38,7 +38,7 @@
 template<class UniformRandomBitGenerator, class Function = identity>
 class roulette_wheel_selection {
 public:
-	explicit roulette_wheel_selection(UniformRandomBitGenerator& g, const Function& f = Function());
+	explicit roulette_wheel_selection(UniformRandomBitGenerator& g, const Function& f = Function()) noexcept(noexcept(Function(f)));
 	template<class Specimen>
 	void operator()(std::vector<Specimen>& specimens, std::size_t n);
 private:
@@ -47,7 +47,7 @@ private:
 };
 
 template<class UniformRandomBitGenerator, class Function>
-inline roulette_wheel_selection<UniformRandomBitGenerator, Function>::roulette_wheel_selection(UniformRandomBitGenerator& g, const Function& f)
+inline roulette_wheel_selection<UniformRandomBitGenerator, Function>::roulette_wheel_selection(UniformRandomBitGenerator& g, const Function& f) noexcept(noexcept(Function(f)))
 	: rand(g), probability_function(f) {}
 
 template<class UniformRandomBitGenerator, class Function>

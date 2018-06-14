@@ -28,7 +28,7 @@
 template<class Breeder, class Mutator>
 class mutating_breeder {
 public:
-	mutating_breeder(const Breeder& breeder, const Mutator& mutator);
+	mutating_breeder(const Breeder& breeder, const Mutator& mutator) noexcept(noexcept(Breeder(breeder)) && noexcept(Mutator(mutator)));
 	template<class Specimen>
 	Specimen operator()(const Specimen& lhs, const Specimen& rhs);
 private:
@@ -37,7 +37,7 @@ private:
 };
 
 template<class Breeder, class Mutator>
-inline mutating_breeder<Breeder, Mutator>::mutating_breeder(const Breeder& breeder, const Mutator& mutator)
+inline mutating_breeder<Breeder, Mutator>::mutating_breeder(const Breeder& breeder, const Mutator& mutator) noexcept(noexcept(Breeder(breeder)) && noexcept(Mutator(mutator)))
 	: underlying_breeder(breeder), mutator(mutator) {}
 
 template<class Breeder, class Mutator>

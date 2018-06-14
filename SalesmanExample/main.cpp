@@ -29,6 +29,7 @@
 #include <iostream>
 #include <random>
 #include <vector>
+#include <gsl/gsl_util>
 #include <genetics.h>
 #include "path_evaluator.h"
 #include "path_merger.h"
@@ -86,10 +87,10 @@ int main() {
 		std::to_chars(&filename[7], &filename[8], i);
 		std::ofstream out_pos(filename);
 		for (const auto& index : result.value()) {
-			const auto& [x, y] = positions[index];
+			const auto& [x, y] = gsl::at(positions, index);
 			out_pos << x << ' ' << y << '\n';
 		}
-		const auto& [x, y] = positions[result.value().front()];
+		const auto& [x, y] = gsl::at(positions, result.value().front());
 		out_pos << x << ' ' << y << '\n';
 	}
 	return 0;

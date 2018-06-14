@@ -34,7 +34,7 @@
 template<class Compare = std::less<>>
 class elitist_selection {
 public:
-	explicit elitist_selection(const Compare& comp = Compare());
+	explicit elitist_selection(const Compare& comp = Compare()) noexcept(noexcept(Compare(comp)));
 	template<class Specimen>
 	void operator()(std::vector<Specimen>& specimens, std::size_t n) const;
 private:
@@ -42,7 +42,7 @@ private:
 };
 
 template<class Compare>
-inline elitist_selection<Compare>::elitist_selection(const Compare& comp)
+inline elitist_selection<Compare>::elitist_selection(const Compare& comp) noexcept(noexcept(Compare(comp)))
 	: comparator(comp) {}
 
 template<class Compare>

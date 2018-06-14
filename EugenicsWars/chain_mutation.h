@@ -32,7 +32,7 @@
 template<class... Mutations>
 class chain_mutation {
 public:
-	explicit chain_mutation(Mutations&&... mutations);
+	explicit chain_mutation(Mutations&&... mutations) noexcept(noexcept(Mutations(std::forward<Mutations>(mutations)...)));
 	template<class T>
 	void operator()(T& specimen);
 private:
@@ -43,7 +43,7 @@ private:
 };
 
 template<class... Mutations>
-inline chain_mutation<Mutations...>::chain_mutation(Mutations&&... mutations)
+inline chain_mutation<Mutations...>::chain_mutation(Mutations&&... mutations) noexcept(noexcept(Mutations(std::forward<Mutations>(mutations)...)))
 	: mutations(std::forward<Mutations>(mutations)...) {}
 
 template<class... Mutations>
