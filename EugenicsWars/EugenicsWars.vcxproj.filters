@@ -48,5 +48,8 @@
     <ClInclude Include="chain_mutation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="thread_safe_random.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
