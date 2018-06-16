@@ -25,42 +25,46 @@
 #ifndef EUGENICS_WARS_THREAD_SAFE_RANDOM_H
 #define EUGENICS_WARS_THREAD_SAFE_RANDOM_H
 
+#include <chrono>
 #include <random>
-#include <utility>
+#include <gsl/gsl_util>
 
-template<class UniformRandomBitGenerator = std::default_random_engine, class SeedSequence = std::seed_seq>
-class thread_safe_random_bit_generator {
-public:
+struct default_random_initialization_policy {
+	static std::seed_seq& get();
+};
+
+inline std::seed_seq& default_random_initialization_policy::get() {
+	static thread_local std::seed_seq sequence {
+		gsl::narrow_cast<unsigned>(std::chrono::steady_clock::now().time_since_epoch().count()),
+		std::random_device()(),
+		gsl::narrow_cast<unsigned>(std::chrono::high_resolution_clock::now().time_since_epoch().count()),
+		gsl::narrow_cast<unsigned>(std::chrono::system_clock::now().time_since_epoch().count()),
+	};
+	return sequence;
+}
+
+template<class UniformRandomBitGenerator, class InitializationPolicy = default_random_initialization_policy>
+struct thread_safe_random_bit_generator {
 	using underlying_generator_type = UniformRandomBitGenerator;
-	using seed_sequence_type = SeedSequence;
 	using result_type = typename underlying_generator_type::result_type;
-	template<class... Args>
-	thread_safe_random_bit_generator(Args&&... args) noexcept(noexcept(seed_sequence_type {std::forward<Args>(args)...}));
 	static constexpr result_type min() noexcept(noexcept(underlying_generator_type::min()));
 	static constexpr result_type max() noexcept(noexcept(underlying_generator_type::max()));
 	result_type operator()();
-private:
-	seed_sequence_type seed_sequence;
 };
 
-template<class UniformRandomBitGenerator, class SeedSequence>
-template<class... Args>
-inline thread_safe_random_bit_generator<UniformRandomBitGenerator, SeedSequence>::thread_safe_random_bit_generator(Args&&... args) noexcept(noexcept(seed_sequence_type {std::forward<Args>(args)...}))
-	: seed_sequence {std::forward<Args>(args)...} {}
-
-template<class UniformRandomBitGenerator, class SeedSequence>
-constexpr auto thread_safe_random_bit_generator<UniformRandomBitGenerator, SeedSequence>::min() noexcept(noexcept(underlying_generator_type::min())) -> result_type {
+template<class UniformRandomBitGenerator, class InitializationPolicy>
+constexpr auto thread_safe_random_bit_generator<UniformRandomBitGenerator, InitializationPolicy>::min() noexcept(noexcept(underlying_generator_type::min())) -> result_type {
 	return underlying_generator_type::min();
 }
 
-template<class UniformRandomBitGenerator, class SeedSequence>
-constexpr auto thread_safe_random_bit_generator<UniformRandomBitGenerator, SeedSequence>::max() noexcept(noexcept(underlying_generator_type::max())) -> result_type {
+template<class UniformRandomBitGenerator, class InitializationPolicy>
+constexpr auto thread_safe_random_bit_generator<UniformRandomBitGenerator, InitializationPolicy>::max() noexcept(noexcept(underlying_generator_type::max())) -> result_type {
 	return underlying_generator_type::max();
 }
 
-template<class UniformRandomBitGenerator, class SeedSequence>
-inline auto thread_safe_random_bit_generator<UniformRandomBitGenerator, SeedSequence>::operator()() -> result_type {
-	static thread_local underlying_generator_type generator(seed_sequence);
+template<class UniformRandomBitGenerator, class InitializationPolicy>
+inline auto thread_safe_random_bit_generator<UniformRandomBitGenerator, InitializationPolicy>::operator()() -> result_type {
+	static thread_local underlying_generator_type generator(InitializationPolicy::get());
 	return generator();
 }
 

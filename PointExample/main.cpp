@@ -44,7 +44,7 @@ double f(const point& p) noexcept {
 }
 
 int main() {
-	thread_safe_random_bit_generator<std::mt19937_64> rand(std::chrono::high_resolution_clock::now().time_since_epoch().count());
+	thread_safe_random_bit_generator<std::mt19937_64> rand;
 	using algorithm_type = genetic_algorithm<point, double>;
 	algorithm_type::context_type context;
 	context.initial_population_size = 100;
