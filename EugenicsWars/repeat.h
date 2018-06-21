@@ -26,23 +26,27 @@
 #define EUGENICS_WARS_REPEAT_H
 
 #include <cstddef>
+#include <utility>
 
-template<class Function>
-constexpr void repeat(std::size_t n, Function f) noexcept(noexcept(f())) {
+template<class NullaryFunction>
+constexpr void repeat(std::size_t n, NullaryFunction f)
+noexcept(noexcept(std::forward<NullaryFunction>(f)())) {
 	while (n--) {
-		f();
+		std::forward<NullaryFunction>(f)();
 	}
 }
 
-template<class Function>
-constexpr void repeat_while(std::size_t n, Function f) noexcept(noexcept(f())) {
-	while (n-- && static_cast<bool>(f()));
+template<class NullaryPredicate>
+constexpr void repeat_while(std::size_t n, NullaryPredicate f)
+noexcept(noexcept(std::forward<NullaryPredicate>(f)())) {
+	while (n-- && static_cast<bool>(std::forward<NullaryPredicate>(f)()));
 }
 
-template<class Function>
-constexpr void repeat_until(std::size_t n, Function f) noexcept(noexcept(f())) {
+template<class NullaryPredicate>
+constexpr void repeat_until(std::size_t n, NullaryPredicate f)
+noexcept(noexcept(std::forward<NullaryPredicate>(f)())) {
 	while (n--) {
-		if (f())
+		if (std::forward<NullaryPredicate>(f)())
 			return;
 	}
 }
