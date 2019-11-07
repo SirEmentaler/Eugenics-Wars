@@ -22,8 +22,8 @@
 //
 ////////////////////////////////////////////////////////////
 
-#ifndef EUGENICS_WARS_MUTATE_WITH_PROBABILITY_H
-#define EUGENICS_WARS_MUTATE_WITH_PROBABILITY_H
+#ifndef GENETIC_ALGORITHM_LIBRARY_MUTATE_WITH_PROBABILITY_H
+#define GENETIC_ALGORITHM_LIBRARY_MUTATE_WITH_PROBABILITY_H
 
 #include <random>
 

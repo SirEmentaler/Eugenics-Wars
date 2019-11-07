@@ -22,8 +22,8 @@
 //
 ////////////////////////////////////////////////////////////
 
-#ifndef EUGENICS_WARS_CHAIN_MUTATION_H
-#define EUGENICS_WARS_CHAIN_MUTATION_H
+#ifndef GENETIC_ALGORITHM_LIBRARY_CHAIN_MUTATION_H
+#define GENETIC_ALGORITHM_LIBRARY_CHAIN_MUTATION_H
 
 #include <cstddef>
 #include <utility>

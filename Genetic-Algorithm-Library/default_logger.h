@@ -22,8 +22,8 @@
 //
 ////////////////////////////////////////////////////////////
 
-#ifndef EUGENICS_WARS_DEFAULT_LOGGER_H
-#define EUGENICS_WARS_DEFAULT_LOGGER_H
+#ifndef GENETIC_ALGORITHM_LIBRARY_DEFAULT_LOGGER_H
+#define GENETIC_ALGORITHM_LIBRARY_DEFAULT_LOGGER_H
 
 #include <ostream>
 #include <vector>

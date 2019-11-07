@@ -22,8 +22,8 @@
 //
 ////////////////////////////////////////////////////////////
 
-#ifndef EUGENICS_WARS_ELITIST_SELECTION_H
-#define EUGENICS_WARS_ELITIST_SELECTION_H
+#ifndef GENETIC_ALGORITHM_LIBRARY_ELITIST_SELECTION_H
+#define GENETIC_ALGORITHM_LIBRARY_ELITIST_SELECTION_H
 
 #include <algorithm>
 #include <cstddef>

@@ -22,8 +22,8 @@
 //
 ////////////////////////////////////////////////////////////
 
-#ifndef EUGENICS_WARS_MUTATING_BREEDER_H
-#define EUGENICS_WARS_MUTATING_BREEDER_H
+#ifndef GENETIC_ALGORITHM_LIBRARY_MUTATING_BREEDER_H
+#define GENETIC_ALGORITHM_LIBRARY_MUTATING_BREEDER_H
 
 template<class Breeder, class Mutator>
 class mutating_breeder {

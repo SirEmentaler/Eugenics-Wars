@@ -22,8 +22,8 @@
 //
 ////////////////////////////////////////////////////////////
 
-#ifndef EUGENICS_WARS_REPEAT_H
-#define EUGENICS_WARS_REPEAT_H
+#ifndef GENETIC_ALGORITHM_LIBRARY_REPEAT_H
+#define GENETIC_ALGORITHM_LIBRARY_REPEAT_H
 
 #include <cstddef>
 #include <utility>

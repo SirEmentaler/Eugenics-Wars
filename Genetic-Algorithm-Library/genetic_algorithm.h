@@ -22,8 +22,8 @@
 //
 ////////////////////////////////////////////////////////////
 
-#ifndef EUGENICS_WARS_GENETIC_ALGORITHM_H
-#define EUGENICS_WARS_GENETIC_ALGORITHM_H
+#ifndef GENETIC_ALGORITHM_LIBRARY_GENETIC_ALGORITHM_H
+#define GENETIC_ALGORITHM_LIBRARY_GENETIC_ALGORITHM_H
 
 #include <algorithm>
 #include <functional>

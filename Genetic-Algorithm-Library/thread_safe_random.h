@@ -22,8 +22,8 @@
 //
 ////////////////////////////////////////////////////////////
 
-#ifndef EUGENICS_WARS_THREAD_SAFE_RANDOM_H
-#define EUGENICS_WARS_THREAD_SAFE_RANDOM_H
+#ifndef GENETIC_ALGORITHM_LIBRARY_THREAD_SAFE_RANDOM_H
+#define GENETIC_ALGORITHM_LIBRARY_THREAD_SAFE_RANDOM_H
 
 #include <chrono>
 #include <random>
