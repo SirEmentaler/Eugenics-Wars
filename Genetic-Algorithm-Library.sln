@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27703.2026
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "EugenicsWars", "EugenicsWars\EugenicsWars.vcxproj", "{F4C4DB6D-60EE-4367-A40F-51D973FD8469}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Genetic-Algorithm-Library", "Genetic-Algorithm-Library\Genetic-Algorithm-Library.vcxproj", "{F4C4DB6D-60EE-4367-A40F-51D973FD8469}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PointExample", "PointExample\PointExample.vcxproj", "{8D9BC001-3B5E-4F96-ADBA-C4910363ED06}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -11,8 +11,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PointExample", "PointExampl
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SalesmanExample", "SalesmanExample\SalesmanExample.vcxproj", "{E9E94887-A3D5-4A17-B73F-273CCD3E608F}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "EugenicsWarsTests", "EugenicsWarsTests\EugenicsWarsTests.vcxproj", "{00DF9F31-41BA-4582-B8F5-A39A57CF68E5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
