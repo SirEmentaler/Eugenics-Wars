@@ -26,23 +26,62 @@
 #define EUGENICS_WARS_REPEAT_H
 
 #include <cstddef>
+#include <utility>
 
-template<class Function>
-constexpr void repeat(std::size_t n, Function f) noexcept(noexcept(f())) {
+/// Calls provided function object \a f exactly \a n times.
+/**
+Equivalent to calling the function object in a \c for loop but expresses
+intent more clearly and does not expose the loop index to the function.
+
+@tparam NullaryFunction A type that satifies FunctionObject for an empty
+	                    argument list
+
+@param[in] n Number of times to call the function object
+@param[in] f Function object to call
+*/
+template<class NullaryFunction>
+constexpr void repeat(std::size_t n, NullaryFunction&& f)
+noexcept(noexcept(std::forward<NullaryFunction>(f)())) {
 	while (n--) {
-		f();
+		std::forward<NullaryFunction>(f)();
 	}
 }
 
-template<class Function>
-constexpr void repeat_while(std::size_t n, Function f) noexcept(noexcept(f())) {
-	while (n-- && static_cast<bool>(f()));
+/// Calls function object \a f up to \a n times until \c false is returned.
+/**
+Equivalent to calling the function object in a `for` loop but expresses
+intent more clearly and does not expose the loop index to the function.
+
+@tparam NullaryPredicate A type that satifies FunctionObject for an empty
+                         argument list and whose return type is contextually
+                         convertible to \c bool
+
+@param[in] n Maximum number of times to call the function object
+@param[in] f Function object to call
+*/
+template<class NullaryPredicate>
+constexpr void repeat_while(std::size_t n, NullaryPredicate&& f)
+noexcept(noexcept(std::forward<NullaryPredicate>(f)())) {
+	while (n-- && static_cast<bool>(std::forward<NullaryPredicate>(f)()));
 }
 
-template<class Function>
-constexpr void repeat_until(std::size_t n, Function f) noexcept(noexcept(f())) {
+/// Calls function object \a f up to \a n times until \c true is returned.
+/**
+Equivalent to calling the function object in a `for` loop but expresses
+intent more clearly and does not expose the loop index to the function.
+
+@tparam NullaryPredicate A type that satifies FunctionObject for an empty
+                         argument list and whose return type is contextually
+                         convertible to \c bool
+
+@param[in] n Maximum number of times to call the function object
+@param[in] f Function object to call
+*/
+template<class NullaryPredicate>
+constexpr void repeat_until(std::size_t n, NullaryPredicate&& f)
+noexcept(noexcept(std::forward<NullaryPredicate>(f)())) {
 	while (n--) {
-		if (f())
+		if (std::forward<NullaryPredicate>(f)())
 			return;
 	}
 }

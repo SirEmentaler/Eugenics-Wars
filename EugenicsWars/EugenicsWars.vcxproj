@@ -186,6 +186,7 @@
     <ClInclude Include="mutating_breeder.h" />
     <ClInclude Include="repeat.h" />
     <ClInclude Include="roulette_wheel_selection.h" />
+    <ClInclude Include="thread_safe_random.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

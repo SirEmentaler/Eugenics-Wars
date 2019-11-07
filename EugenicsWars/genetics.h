@@ -35,5 +35,6 @@
 #include "mutating_breeder.h"
 #include "repeat.h"
 #include "roulette_wheel_selection.h"
+#include "thread_safe_random.h"
 
 #endif

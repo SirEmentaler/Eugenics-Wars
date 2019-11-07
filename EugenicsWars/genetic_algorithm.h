@@ -66,6 +66,18 @@ struct genetic_algorithm<Specimen, Rating>::context_type {
 	std::function<bool(rating_type, rating_type)> comparator;
 };
 
+template<class Context>
+constexpr bool valid(const Context& context) noexcept {
+	return context.initial_population_size > 0
+		&& context.breeding_population_size > 0
+		&& context.generator != nullptr
+		&& context.evaluator != nullptr
+		&& context.selector != nullptr
+		&& context.breeder != nullptr
+		&& context.comparator != nullptr
+	;
+}
+
 template<class Specimen, class Rating>
 inline genetic_algorithm<Specimen, Rating>::genetic_algorithm(const context_type& context)
 	: context(context) {}
@@ -77,13 +89,7 @@ inline genetic_algorithm<Specimen, Rating>::genetic_algorithm(context_type&& con
 template<class Specimen, class Rating>
 template<class... Functions>
 inline auto genetic_algorithm<Specimen, Rating>::operator()(Functions&&... observers) const -> evaluated_specimen_type {
-	Expects(context.initial_population_size > 0);
-	Expects(context.breeding_population_size > 0);
-	Expects(context.generator != nullptr);
-	Expects(context.evaluator != nullptr);
-	Expects(context.selector != nullptr);
-	Expects(context.breeder != nullptr);
-	Expects(context.comparator != nullptr);
+	Expects(valid(context));
 	std::vector<evaluated_specimen_type> specimens(context.initial_population_size);
 	for (auto&& specimen : specimens) {
 		specimen.value() = context.generator();
