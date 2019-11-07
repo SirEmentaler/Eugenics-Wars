@@ -27,6 +27,7 @@
 
 #include <utility>
 
+/// A function object type representing the identity function
 struct identity {
 	template<class T>
 	constexpr T&& operator()(T&& t) const noexcept;
