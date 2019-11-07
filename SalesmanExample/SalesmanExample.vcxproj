@@ -145,7 +145,7 @@
       <PreprocessorDefinitions>GSL_UNENFORCED_ON_CONTRACT_VIOLATION;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <EnablePREfast>true</EnablePREfast>
-      <AdditionalIncludeDirectories>../include;../EugenicsWars</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../include;../Genetic-Algorithm-Library</AdditionalIncludeDirectories>
       <DisableLanguageExtensions>true</DisableLanguageExtensions>
       <EnforceTypeConversionRules>true</EnforceTypeConversionRules>
       <LanguageStandard>stdcpp17</LanguageStandard>
@@ -169,7 +169,7 @@
       <PreprocessorDefinitions>LOGGING;GSL_UNENFORCED_ON_CONTRACT_VIOLATION;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <EnablePREfast>true</EnablePREfast>
-      <AdditionalIncludeDirectories>../include;../EugenicsWars</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../include;../Genetic-Algorithm-Library</AdditionalIncludeDirectories>
       <DisableLanguageExtensions>true</DisableLanguageExtensions>
       <EnforceTypeConversionRules>true</EnforceTypeConversionRules>
       <LanguageStandard>stdcpp17</LanguageStandard>
@@ -206,7 +206,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <EnablePREfast>true</EnablePREfast>
-      <AdditionalIncludeDirectories>../include;../EugenicsWars</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../include;../Genetic-Algorithm-Library</AdditionalIncludeDirectories>
       <DisableLanguageExtensions>true</DisableLanguageExtensions>
       <EnforceTypeConversionRules>true</EnforceTypeConversionRules>
       <LanguageStandard>stdcpp17</LanguageStandard>

@@ -145,7 +145,7 @@
       <EnforceTypeConversionRules>true</EnforceTypeConversionRules>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <PrecompiledHeaderFile />
-      <AdditionalIncludeDirectories>../include;../EugenicsWars</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../include;../Genetic-Algorithm-Library</AdditionalIncludeDirectories>
       <EnablePREfast>true</EnablePREfast>
     </ClCompile>
     <Link>
@@ -170,7 +170,7 @@
       <LanguageStandard>stdcpp17</LanguageStandard>
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>../include;../EugenicsWars</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../include;../Genetic-Algorithm-Library</AdditionalIncludeDirectories>
       <EnablePREfast>true</EnablePREfast>
     </ClCompile>
     <Link>
@@ -206,7 +206,7 @@
       <EnforceTypeConversionRules>true</EnforceTypeConversionRules>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <PrecompiledHeaderFile />
-      <AdditionalIncludeDirectories>../include;../EugenicsWars</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../include;../Genetic-Algorithm-Library</AdditionalIncludeDirectories>
       <EnablePREfast>true</EnablePREfast>
     </ClCompile>
     <Link>
