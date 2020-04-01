@@ -37,7 +37,7 @@ public:
 	using value_type = Specimen;
 	using rating_type = Rating;
 	template<class... Args, class = std::enable_if_t<!std::is_same_v<std::tuple<std::decay_t<Args>...>, std::tuple<evaluated_specimen>>>>
-	constexpr evaluated_specimen(Args&&... args) noexcept(noexcept(value_type(std::forward<Args>(args)...)));
+	constexpr evaluated_specimen(Args&&... args);
 	constexpr value_type& value() & noexcept;
 	constexpr const value_type& value() const& noexcept;
 	constexpr bool has_rating() const noexcept;
@@ -51,7 +51,7 @@ private:
 
 template<class Specimen, class Rating>
 template<class... Args, class>
-constexpr evaluated_specimen<Specimen, Rating>::evaluated_specimen(Args&&... args) noexcept(noexcept(value_type(std::forward<Args>(args)...)))
+constexpr evaluated_specimen<Specimen, Rating>::evaluated_specimen(Args&&... args)
 	: specimen(std::forward<Args>(args)...) {}
 
 template<class Specimen, class Rating>
