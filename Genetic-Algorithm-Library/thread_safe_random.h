@@ -37,8 +37,6 @@ inline std::seed_seq& default_random_initialization_policy::get() {
 	static thread_local std::seed_seq sequence {
 		gsl::narrow_cast<unsigned>(std::chrono::steady_clock::now().time_since_epoch().count()),
 		std::random_device()(),
-		gsl::narrow_cast<unsigned>(std::chrono::high_resolution_clock::now().time_since_epoch().count()),
-		gsl::narrow_cast<unsigned>(std::chrono::system_clock::now().time_since_epoch().count()),
 	};
 	return sequence;
 }
